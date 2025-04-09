@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# Docker volumes e banco local
+postgres_data/
+__docker_volumes__/
+*.db
+
+# VSCode settings
+.vscode/
+
+# Pytest cache
+.pytest_cache/
+
+# Alembic cache
+alembic/versions/*.pyc
+
+# Arquivos de ambiente
+.env
+.env.*
+
+# MacOS files
+.DS_Store
+
+# Logs
+*.log
