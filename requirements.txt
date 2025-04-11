@@ -6,3 +6,4 @@ pytest
 pytest-bdd
 python-dotenv
 psycopg2-binary
+alembic
