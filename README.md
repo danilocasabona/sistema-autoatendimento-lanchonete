@@ -29,10 +29,9 @@ project_root/
 
 ## 🧩 Documentação Técnica
 
-- [Guia de Estudos - Markdown](docs/guia_estudos_lanchonete.md)
-- [Guia de Estudos - PDF](docs/guia_estudos_lanchonete.pdf)
-- [Mapeamento de Conceitos - Markdown](docs/mapeamento_conceitos_lanchonete.md)
-- [Mapeamento de Conceitos - PDF](docs/mapeamento_conceitos_lanchonete.pdf)
+- [🗺️ Mapa de Entidades](docs/arquitetura/mapa-de-entidades.md)
+- [📚 Estudos e Referências](docs/estudo/)
+- [🖼️ Imagens e Diagramas](docs/imagens/)
 
 ## 🧠 Mapa Mental do Projeto
 
@@ -101,4 +100,3 @@ Danilo Casabona
 ---
 
 > "Construindo sistemas com propósito: escaláveis, testáveis e preparados para o futuro."
-
