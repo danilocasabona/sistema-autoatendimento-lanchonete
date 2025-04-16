@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from app.adapters.db.database import get_db
 from app.api import produto
+from app.api import cliente
 
 app = FastAPI(
     title="Sistema de Autoatendimento da Lanchonete",
@@ -10,6 +11,7 @@ app = FastAPI(
 )
 
 app.include_router(produto.router)
+app.include_router(cliente.router)
 
 @app.get("/health")
 def health_check():

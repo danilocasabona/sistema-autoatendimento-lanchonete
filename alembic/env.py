@@ -11,7 +11,8 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from app.adapters.db.database import Base
 from app.adapters.db.database import engine
-from app.core.models import produto
+from app.core import models
+# from app.core.models import produto
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
