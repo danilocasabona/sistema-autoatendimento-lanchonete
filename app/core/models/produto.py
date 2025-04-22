@@ -8,3 +8,4 @@ class Produto(Base):
     nome = Column(String, nullable=False)
     descricao = Column(String, nullable=True)
     preco = Column(DECIMAL(10, 2), nullable=False)
+    categoria = Column(String, nullable=False)

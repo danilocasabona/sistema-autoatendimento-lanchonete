@@ -2,11 +2,19 @@ from pydantic import BaseModel, field_serializer, field_validator, ConfigDict, F
 from typing import Optional
 from decimal import Decimal, ROUND_HALF_UP
 import bleach
+from enum import Enum
+
+class CategoriaEnum(str, Enum):
+    lanche = "Lanche"
+    acompanhamento = "Acompanhamento"
+    bebida = "Bebida"
+    sobremesa = "Sobremesa"
 
 # 🧩 Schema para entrada de dados (criação de produto)
 class ProdutoCreateSchema(BaseModel):
     nome: str = Field(..., min_length=3, max_length=100)
     descricao: Optional[str] = None
+    categoria: CategoriaEnum = Field(..., description="Categoria do produto")
 
     @field_validator("descricao", mode="before")
     @classmethod
@@ -27,6 +35,7 @@ class ProdutoResponseSchema(BaseModel):
     nome: str
     descricao: Optional[str] = None
     preco: Decimal
+    categoria: CategoriaEnum
 
     @field_serializer("preco", mode="plain")
     def formatar_preco(self, preco: Decimal) -> str:
