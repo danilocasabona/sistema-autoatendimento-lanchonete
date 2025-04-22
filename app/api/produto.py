@@ -4,6 +4,7 @@ from typing import List
 
 from app.adapters.db.database import get_db
 from app.core.schemas.produto import ProdutoCreateSchema, ProdutoResponseSchema
+from app.core.enums.categoria import CategoriaEnum
 from app.core.services import produto as service_produto
 
 router = APIRouter(prefix="/produtos", tags=["Produtos"])
@@ -41,3 +42,9 @@ def deletar_produto(produto_id: int, db: Session = Depends(get_db)):
     if not produto:
         raise HTTPException(status_code=404, detail="Produto não encontrado")
     return
+
+# 🧩 Listar produtos por categoria
+@router.get("/categoria/{categoria}", response_model=List[ProdutoResponseSchema])
+def listar_produtos_por_categoria(categoria: CategoriaEnum, db: Session = Depends(get_db)):
+    produtos = service_produto.listar_produtos_por_categoria(db, categoria.value)
+    return produtos

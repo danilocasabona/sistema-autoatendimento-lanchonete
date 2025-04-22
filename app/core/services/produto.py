@@ -4,10 +4,13 @@ from app.core.models.produto import Produto
 
 # 🧩 Função para criar um novo produto
 def criar_produto(db: Session, produto: ProdutoCreateSchema):
+    if not produto.categoria:
+        raise ValueError("Categoria não pode ser nula")
     novo_produto = Produto(
         nome=produto.nome,
         descricao=produto.descricao,
-        preco=produto.preco
+        preco=produto.preco,
+        categoria=produto.categoria
     )
     db.add(novo_produto)
     db.commit()
@@ -40,3 +43,7 @@ def deletar_produto(db: Session, produto_id: int):
         db.delete(produto_db)
         db.commit()
     return produto_db
+
+# 🧩 Função para listar produtos por categoria
+def listar_produtos_por_categoria(db: Session, categoria: str):
+    return db.query(Produto).filter(Produto.categoria == categoria).all()
