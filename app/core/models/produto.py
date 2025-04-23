@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DECIMAL
 from app.adapters.db.database import Base
 
-class Produto(Base):
+class ProdutoDB(Base):
     __tablename__ = "produtos"
 
     id = Column(Integer, primary_key=True, index=True)
