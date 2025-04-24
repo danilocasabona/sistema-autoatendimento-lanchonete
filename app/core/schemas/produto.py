@@ -27,7 +27,7 @@ class ProdutoCreateSchema(BaseModel):
     def arredondar_preco(self, preco: Decimal) -> str:
         return format(preco.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP), ".2f")
     
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", from_attributes=True)
 
 # 🧩 Schema para saída de dados (resposta da API)
 class ProdutoResponseSchema(BaseModel):

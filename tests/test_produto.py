@@ -275,20 +275,21 @@ def test_criar_produto_com_categoria_invalida():
     response = client.post("/produtos/", json=produto_data)
     assert response.status_code == 422
 
-def test_listar_produtos_por_categoria():
-    produto_data = {
-        "nome": "Coca-Cola",
-        "descricao": "Refrigerante",
-        "preco": 8.0,
-        "categoria": "Bebida"
-    }
-    post = client.post("/produtos/", json=produto_data)
-    assert post.status_code == 201
-    produto = post.json()
 
-    response = client.get("/produtos/categoria/Bebida")
+# Novo teste para listar produtos por categoria usando a fixture produto_factory
+
+def test_listar_produtos_por_categoria(produto_factory):
+    produto = produto_factory(nome="Coca-Cola", descricao="Refrigerante", preco=8.0, categoria="Bebida")
+    produto_id = produto["id"]
+
+    response = client.get(f"/produtos/categoria/Bebida")
     assert response.status_code == 200
     produtos = response.json()
-    assert any(p["id"] == produto["id"] for p in produtos)
+    assert any(p["id"] == produto_id for p in produtos)
 
-    client.delete(f"/produtos/{produto['id']}")
+# Teste para listar produtos por categoria sem resultados
+def test_listar_produtos_por_categoria_sem_resultados():
+    # Utiliza uma categoria válida sem produtos cadastrados durante o teste
+    response = client.get("/produtos/categoria/Acompanhamento")
+    assert response.status_code == 200
+    assert response.json() == []
