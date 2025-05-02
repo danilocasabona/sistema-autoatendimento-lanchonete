@@ -22,6 +22,12 @@ Cadastro opcional para identificação do cliente no sistema.
 **Relacionamentos:**
 - Um cliente pode ter vários pedidos.
 
+**Validações e Regras de Negócio:**
+- Nome: sanitização de input para evitar injeção de código (XSS).
+- Email: deve ser único e ter formato válido.
+- Telefone: deve seguir formato numérico válido.
+- CPF: deve conter exatamente 11 dígitos numéricos.
+
 ---
 
 ## 📦 2. Produto
@@ -37,6 +43,11 @@ Itens disponíveis no cardápio da lanchonete.
 
 **Relacionamentos:**
 - Um produto pode estar em vários itens de pedido.
+
+**Validações e Regras de Negócio:**
+- Nome e descrição: sanitização de input para evitar injeção de código.
+- Preço: deve ser um valor positivo maior que zero.
+- Categoria: deve pertencer ao Enum de categorias predefinidas.
 
 ---
 
@@ -94,3 +105,12 @@ Registro do pagamento do pedido.
 ---
 
 ## 🔗 Relacionamentos Resumidos
+
+## 🛡️ Notas Técnicas e Boas Práticas Adotadas
+
+- Utilização de Pydantic para validação e sanitização de dados.
+- Uso de Enum para categorias de Produto, assegurando valores válidos.
+- Tratamento de erros com respostas HTTP padronizadas (400, 404, 409, etc.).
+- Proteção contra XSS nas entradas de texto.
+- Testes automatizados (pytest) com cobertura de cenários positivos e negativos.
+- Adoção de Clean Architecture / Hexagonal Architecture no design do sistema.

@@ -19,13 +19,6 @@ def buscar_cliente_por_id(cliente_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Cliente não encontrado")
     return cliente
 
-@router.get("/cpf/{cpf}", response_model=ClienteResponseSchema)
-def buscar_cliente_por_cpf(cpf: str, db: Session = Depends(get_db)):
-    cliente = cliente_service.get_cliente_by_cpf(db, cpf)
-    if not cliente:
-        raise HTTPException(status_code=404, detail="Cliente não encontrado")
-    return cliente
-
 @router.post("/", response_model=ClienteResponseSchema, status_code=201)
 def criar_cliente(cliente_data: ClienteCreateSchema, db: Session = Depends(get_db)):
     return cliente_service.create_cliente(db, cliente_data)
