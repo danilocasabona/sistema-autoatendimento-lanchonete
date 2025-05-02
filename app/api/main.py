@@ -1,17 +1,17 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from app.adapters.db.database import get_db
-from app.api import produto
-from app.api import cliente
+from app.adapters.interfaces.fastapi import produto_router
+from app.adapters.interfaces.fastapi import cliente_router
 
 app = FastAPI(
     title="Sistema de Autoatendimento da Lanchonete",
-    description="Documentação automática via Swagger e Redoc",
+    description="Documentacao automatica via Swagger e Redoc",
     version="1.0.0",
 )
 
-app.include_router(produto.router)
-app.include_router(cliente.router)
+app.include_router(produto_router.router)
+app.include_router(cliente_router.router)
 
 @app.get("/health")
 def health_check():

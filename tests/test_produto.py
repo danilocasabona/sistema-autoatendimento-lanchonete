@@ -21,6 +21,7 @@ def produto_factory():
             "preco": preco,
             "categoria": categoria
         })
+        assert response.status_code == 201, f"Falha ao criar produto. Status: {response.status_code} - {response.text}"
         produto = response.json()
         produtos_criados.append(produto["id"])
         return produto

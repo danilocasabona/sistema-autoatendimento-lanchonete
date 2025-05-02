@@ -3,6 +3,8 @@ from app.domain.produto.models import Produto
 from decimal import Decimal
 from app.core.enums.categoria import CategoriaEnum
 from app.core.models.produto import ProdutoDB
+from sqlalchemy.exc import IntegrityError
+from app.core.schemas.produto import ProdutoResponseSchema
 
 class ProdutoRepository(ProdutoRepositoryPort):
     def __init__(self, db_session):
@@ -18,16 +20,14 @@ class ProdutoRepository(ProdutoRepositoryPort):
             categoria=produto.categoria.value
         )
         self.db_session.add(db_produto)
-        self.db_session.commit()
+        try:
+            self.db_session.commit()
+        except IntegrityError as e:
+            self.db_session.rollback()
+            raise ValueError(f"Erro de integridade ao salvar produto: {e}")
         self.db_session.refresh(db_produto)
 
-        produto = Produto(
-            nome=db_produto.nome,
-            descricao=db_produto.descricao,
-            preco=db_produto.preco,
-            categoria=CategoriaEnum(db_produto.categoria)
-        )
-        produto.id = db_produto.id
+        produto = ProdutoResponseSchema.model_validate(db_produto, from_attributes=True)
         return produto
 
     def buscar_por_id(self, produto_id: int) -> Produto:
@@ -35,26 +35,14 @@ class ProdutoRepository(ProdutoRepositoryPort):
         if not db_produto:
             raise ValueError("Produto não encontrado")
 
-        produto = Produto(
-            nome=db_produto.nome,
-            descricao=db_produto.descricao,
-            preco=db_produto.preco,
-            categoria=CategoriaEnum(db_produto.categoria)
-        )
-        produto.id = db_produto.id
+        produto = ProdutoResponseSchema.model_validate(db_produto, from_attributes=True)
         return produto
 
     def listar_todos(self) -> list[Produto]:
         db_produtos = self.db_session.query(ProdutoDB).all()
         produtos = []
         for db_produto in db_produtos:
-            produto = Produto(
-                nome=db_produto.nome,
-                descricao=db_produto.descricao,
-                preco=db_produto.preco,
-                categoria=CategoriaEnum(db_produto.categoria)
-            )
-            produto.id = db_produto.id
+            produto = ProdutoResponseSchema.model_validate(db_produto, from_attributes=True)
             produtos.append(produto)
         return produtos
 
@@ -76,16 +64,14 @@ class ProdutoRepository(ProdutoRepositoryPort):
         db_produto.preco = Decimal(produto_data.preco)
         db_produto.categoria = produto_data.categoria.value
 
-        self.db_session.commit()
+        try:
+            self.db_session.commit()
+        except IntegrityError as e:
+            self.db_session.rollback()
+            raise ValueError(f"Erro de integridade ao atualizar produto: {e}")
         self.db_session.refresh(db_produto)
 
-        produto = Produto(
-            nome=db_produto.nome,
-            descricao=db_produto.descricao,
-            preco=db_produto.preco,
-            categoria=CategoriaEnum(db_produto.categoria)
-        )
-        produto.id = db_produto.id
+        produto = ProdutoResponseSchema.model_validate(db_produto, from_attributes=True)
         return produto
     
 
@@ -93,12 +79,6 @@ class ProdutoRepository(ProdutoRepositoryPort):
         db_produtos = self.db_session.query(ProdutoDB).filter(ProdutoDB.categoria == categoria.value).all()
         produtos = []
         for db_produto in db_produtos:
-            produto = Produto(
-                nome=db_produto.nome,
-                descricao=db_produto.descricao,
-                preco=db_produto.preco,
-                categoria=CategoriaEnum(db_produto.categoria)
-            )
-            produto.id = db_produto.id
+            produto = ProdutoResponseSchema.model_validate(db_produto, from_attributes=True)
             produtos.append(produto)
         return produtos

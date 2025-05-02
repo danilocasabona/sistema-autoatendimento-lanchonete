@@ -6,3 +6,7 @@ class Produto:
         self.descricao = descricao
         self.preco = preco
         self.categoria = categoria
+
+    model_config = {
+        "from_attributes": True
+    }

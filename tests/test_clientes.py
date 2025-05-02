@@ -1,19 +1,37 @@
 import pytest
+from app.adapters.db.database import SessionLocal
+from app.core.models.cliente import Cliente as ClienteORM
+from app.core.models.produto import ProdutoDB as ProdutoORM
 from fastapi.testclient import TestClient
 from app.api.main import app
 import uuid
 
 client = TestClient(app)
 
+@pytest.fixture(autouse=True)
+def resetar_banco():
+    session = SessionLocal()
+    try:
+        session.query(ProdutoORM).delete()
+        session.query(ClienteORM).delete()
+        session.commit()
+    finally:
+        session.close()
+
 @pytest.fixture
 def cliente_factory():
     clientes_criados = []
+    emails_usados = set()
+    cpfs_usados = set()
 
     def criar_cliente(nome="Cliente Teste", email=None, telefone="11999999999", cpf=None):
-        if email is None:
+        if email is None or email in emails_usados:
             email = f"teste_{uuid.uuid4().hex[:8]}@email.com"
-        if not cpf:
+        if not cpf or cpf in cpfs_usados:
             cpf = f"{uuid.uuid4().int % 10**11:011d}"
+
+        emails_usados.add(email)
+        cpfs_usados.add(cpf)
 
         response = client.post("/clientes", json={
             "nome": nome,
@@ -123,13 +141,14 @@ def test_criar_cliente_com_telefone_com_caracteres_especiais():
     assert "telefone" in str(response.json())
 
 def test_criar_cliente_com_nome_script():
+    cpf = f"{uuid.uuid4().int % 10**11:011d}"
     response = client.post("/clientes", json={
         "nome": "<script>alert('xss')</script>",
         "email": "teste@seguro.com",
         "telefone": "11999998888",
-        "cpf": "12345678901"
+        "cpf": cpf
     })
-    assert response.status_code == 422 or response.status_code == 400
+    assert response.status_code == 422
 
 def test_criar_cliente_com_email_sql_injection():
     response = client.post("/clientes", json={
@@ -138,10 +157,10 @@ def test_criar_cliente_com_email_sql_injection():
         "telefone": "11999998888",
         "cpf": "12345678901"
     })
-    assert response.status_code == 422 or response.status_code == 400
+    assert response.status_code == 422
 
 def test_criar_cliente_email_duplicado(cliente_factory):
-    email = "duplicado@email.com"
+    email = f"duplicado_{uuid.uuid4().hex[:8]}@email.com"
     cliente_factory(email=email)
     cpf_unico = f"{uuid.uuid4().int % 10**11:011d}"
     response = client.post("/clientes", json={
@@ -150,7 +169,7 @@ def test_criar_cliente_email_duplicado(cliente_factory):
         "telefone": "11988887777",
         "cpf": cpf_unico
     })
-    assert response.status_code in (400, 409)
+    assert response.status_code == 409
 
 def test_criar_cliente_com_nome_extremo():
     nome_longo = "A" * 10000
@@ -160,7 +179,7 @@ def test_criar_cliente_com_nome_extremo():
         "telefone": "11999998888",
         "cpf": "12345678901"
     })
-    assert response.status_code == 422 or response.status_code == 400
+    assert response.status_code == 422
 
 def test_criar_cliente_com_tipo_errado():
     response = client.post("/clientes", json={
@@ -169,4 +188,4 @@ def test_criar_cliente_com_tipo_errado():
         "telefone": "11999998888",
         "cpf": "12345678901"
     })
-    assert response.status_code in (400, 422)
+    assert response.status_code == 422
