@@ -3,7 +3,7 @@ services:
     build:
       context: ./bin/webserver
       dockerfile: Dockerfile
-    #container_name: lanchonete_app
+    container_name: lanchonete_app
     ports:
       - "8000:8000"
     volumes:
@@ -18,7 +18,7 @@ services:
     build:
       context: ./bin/postgresql
       dockerfile: Dockerfile
-    #container_name: lanchonete_db
+    container_name: lanchonete_db
     restart: 'always'
     env_file:
       - .env
