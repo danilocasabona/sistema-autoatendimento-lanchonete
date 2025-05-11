@@ -55,6 +55,12 @@ cd project_root
 
 2. Crie e ative o ambiente virtual (opcional, mas recomendado)
 
+2.1. Acesse o ambiente do container da aplicação
+```bash
+docker exec -it lanchonete_app /bin/bash
+```
+
+2.2. Dê inicio a aplicação
 ```bash
 python -m venv venv
 source venv/bin/activate  # Linux/macOS

@@ -1,4 +1,3 @@
-
 create table funcionario(
 	funcionario_id INT,
 	nome VARCHAR(255) not null,
