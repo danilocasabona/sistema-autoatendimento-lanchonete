@@ -16,7 +16,6 @@ create table cliente(
 	primary KEY(cliente_id)
 );
 
-
 create table produto_tipo(
 	produto_tipo_id INT,
 	nome VARCHAR(255) not null,
