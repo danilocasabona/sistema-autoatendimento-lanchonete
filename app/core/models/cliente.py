@@ -2,10 +2,10 @@ from sqlalchemy import Column, Integer, String
 from app.adapters.db.database import Base
 
 class Cliente(Base):
-    __tablename__ = "clientes"
+    __tablename__ = "cliente"
 
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True, nullable=False)
-    telefone = Column(String, nullable=True)
+    cliente_id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String(255), nullable=False)
+    email = Column(String(255), unique=True, index=True, nullable=False)
+    telefone = Column(String(11), nullable=True)
     cpf = Column(String(11), unique=True, nullable=False)
