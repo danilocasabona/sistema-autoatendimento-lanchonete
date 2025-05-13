@@ -8,14 +8,11 @@ Este projeto faz parte do Tech Challenge da pós-graduação em Arquitetura de S
 
 ```
 project_root/
+├── .docker/           # Concentra os arquivos de configuração do container
 ├── app/               # Código principal da aplicação
 ├── tests/             # Testes unitários, integração e BDD
 ├── docs/              # Documentação técnica do projeto
-├── Dockerfile         # Dockerização do projeto
-├── docker-compose.yml # Orquestração local
-├── requirements.txt   # Dependências
-├── README.md          # Este arquivo
-└── .env               # Variáveis de ambiente
+└── README.md          # Este arquivo
 ```
 
 ## 🧭 Fluxo do Projeto
@@ -58,6 +55,12 @@ cd project_root
 
 2. Crie e ative o ambiente virtual (opcional, mas recomendado)
 
+2.1. Acesse o ambiente do container da aplicação
+```bash
+docker exec -it lanchonete_app /bin/bash
+```
+
+2.2. Dê inicio a aplicação
 ```bash
 python -m venv venv
 source venv/bin/activate  # Linux/macOS
@@ -67,7 +70,7 @@ venv\Scripts\activate    # Windows
 3. Instale as dependências
 
 ```bash
-pip install -r requirements.txt
+pip install -r ./.docker/bin/webserver/config/requirements.txt
 ```
 
 4. Execute a aplicação
