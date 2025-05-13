@@ -71,7 +71,18 @@ create table pedido(
 create table pagamento(
 	pedido INT not null,
 	codigo_pagamento VARCHAR(255) not null,
-	status VARCHAR(100),
+	status INT not null,
 	primary KEY(pedido, codigo_pagamento),
 	constraint fk_pedido foreign key(pedido) references pedido(pedido_id)
+	constraint fk_pagamento_status foreign key(status) references pagamento_status(pagamento_status_id)
 );
+
+create table pagamento_status(
+	pagamento_status_id INT ,
+	status VARCHAR(50) not null,
+	primary key(pedido_status_id)
+);
+
+insert into pagamento_status(pedido_status_id, status ) values (1, 'Andamento');
+insert into pagamento_status(pedido_status_id, status ) values (2, 'Aprovado');
+insert into pagamento_status(pagamento_status_id, status ) values (3, 'Reprovado');

@@ -11,3 +11,4 @@ class Pagamento(Base):
     status = Column(String(100), nullable=True)
 
     pedido_relacionado = relationship("Pedido", backref="pagamentos")
+    pagamento_status = relationship("Pagamento_status", backref="pagamentos")
