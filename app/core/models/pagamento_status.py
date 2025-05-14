@@ -5,4 +5,4 @@ class PagamentoStatus(Base):
     __tablename__ = "pagamento_status"
 
     pagamento_status_id = Column(Integer, primary_key=True, index=True)
-    status = Column(Integer, nullable=False)
+    status = Column(String(50), nullable=False)

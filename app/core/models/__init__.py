@@ -5,6 +5,7 @@ from .funcionario import Funcionario
 from .produto_tipo import ProdutoTipo
 from .pedido import Pedido
 from .pagamento import Pagamento
+from .pagamento_status import PagamentoStatus
 
 
-__all__ = ["Produto", "Cliente", "PedidoStatus", "Funcionario", "ProdutoTipo", "Pedido", "Pagamento"]
+__all__ = ["Produto", "Cliente", "PedidoStatus", "Funcionario", "ProdutoTipo", "Pedido", "Pagamento", "PagamentoStatus"]

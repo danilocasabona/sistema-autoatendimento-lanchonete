@@ -119,6 +119,20 @@ def upgrade() -> None:
     )
     # ### end Alembic commands ###
 
+    # tabela pedido status
+    op.create_table('pagamento_status',
+        sa.Column('pagamento_status_id', sa.Integer(), nullable=False),
+        sa.Column('status', sa.String(length=50), nullable=False),
+        sa.PrimaryKeyConstraint('pagamento_status_id')
+    )
+    op.create_index(op.f('ix_pagamento_status_pagamento_status_id'), 'pagamento_status', ['pagamento_status_id'], unique=False)
+    op.execute("""
+               INSERT INTO pagamento_status(status) VALUES 
+               ('Andamento'),
+               ('Aprovado'),
+               ('Reprovado');               
+               """)
+
 
 def downgrade() -> None:
     """Downgrade schema."""
@@ -136,4 +150,6 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_cliente_email'), table_name='cliente')
     op.drop_index(op.f('ix_cliente_cliente_id'), table_name='cliente')
     op.drop_table('cliente')
+    op.drop_index(op.f('ix_pagamento_status_pagamento_status_id'), table_name='pagamento_status')
+    op.drop_table('pagamento_status')
     # ### end Alembic commands ###
