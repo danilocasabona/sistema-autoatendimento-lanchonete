@@ -8,6 +8,5 @@ class Produto(Base):
     nome = Column(String(255), nullable=False)
     descricao = Column(String(255), nullable=False)
     preco = Column(DECIMAL(10, 2), nullable=False)
-    categoria = Column(Integer, nullable=False)
     imagem = Column(String(255), nullable=True)
-    cliente = Column(Integer, ForeignKey("cliente.cliente_id"), nullable=True)
+    categoria = Column(Integer, ForeignKey("categoria.categoria_id"), nullable=False)
