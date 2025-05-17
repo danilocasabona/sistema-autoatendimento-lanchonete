@@ -4,6 +4,7 @@ from app.adapters.db.database import Base
 
 class Pedido(Base):
     
+    
     __tablename__ = "pedido"
 
     pedido_id = Column(Integer, primary_key=True)  
@@ -25,3 +26,12 @@ class Pedido(Base):
     produto_2_rel = relationship("Produto", foreign_keys=[produto_2])
     produto_3_rel = relationship("Produto", foreign_keys=[produto_3])
     produto_4_rel = relationship("Produto", foreign_keys=[produto_4])
+
+    def __init__(self, cliente: Integer, produto1: Integer, produto2: Integer, produto3: Integer, produto4: Integer, status: Integer):
+        self.cliente = cliente
+        self.produto_1 = produto1
+        self.produto_1 = produto2
+        self.produto_1 = produto3
+        self.produto_1 = produto4
+        self.status = status
+        
