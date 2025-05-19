@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, constr, ConfigDict
-from schemas.cliente import *
-from schemas.produto import *
-from core.enums import Status_pedido
+from app.core.schemas.cliente import *
+from app.core.schemas.produto import *
+from app.core.enums import status_pedido
 from typing import Optional
 import datetime
 
@@ -43,5 +43,7 @@ class PedidoResponseSchema(BaseModel):
     
 class PedidosResponseSchema(BaseModel):
     pedidos: [PedidoResponseSchema]
+    
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     
     
