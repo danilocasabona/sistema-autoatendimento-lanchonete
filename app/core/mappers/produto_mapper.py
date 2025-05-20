@@ -1,4 +1,4 @@
-from app.core.schemas.produto import ProdutoResponse, ProdutoCreate
+from app.core.schemas.produto.produto import ProdutoResponse, ProdutoCreate
 from app.domain.produto.models import Produto
 from app.core.enums.categoria import CategoriaEnum
 

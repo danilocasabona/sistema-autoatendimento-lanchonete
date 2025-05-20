@@ -1,5 +1,5 @@
 from app.adapters.out.produto_repository import ProdutoRepositoryPort
-from app.core.schemas.produto import ProdutoResponseSchema
+from app.core.schemas.produto.produto import ProdutoResponseSchema
 from typing import List
 
 

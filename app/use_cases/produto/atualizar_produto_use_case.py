@@ -1,5 +1,5 @@
 from app.domain.produto.ports import ProdutoRepositoryPort
-from app.core.schemas.produto import ProdutoCreateSchema, ProdutoResponseSchema
+from app.core.schemas.produto.produto import ProdutoCreateSchema, ProdutoResponseSchema
 
 class AtualizarProdutoUseCase:
     def __init__(self, produto_repository: ProdutoRepositoryPort):

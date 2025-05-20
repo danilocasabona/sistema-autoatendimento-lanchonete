@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.core.schemas.produto import ProdutoCreateSchema
+from app.core.schemas.produto.produto import ProdutoCreateSchema
 from app.core.models.produto import Produto
 
 # 🧩 Função para criar um novo produto

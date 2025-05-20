@@ -4,7 +4,7 @@ from decimal import Decimal
 from app.core.enums.categoria import CategoriaEnum
 from app.core.models.produto import Produto
 from sqlalchemy.exc import IntegrityError
-from app.core.schemas.produto import ProdutoResponseSchema
+from app.core.schemas.produto.produto import ProdutoResponseSchema
 
 class ProdutoRepository(ProdutoRepositoryPort):
     def __init__(self, db_session):
@@ -26,7 +26,7 @@ class ProdutoRepository(ProdutoRepositoryPort):
             self.db_session.rollback()
             raise ValueError(f"Erro de integridade ao salvar produto: {e}")
         self.db_session.refresh(db_produto)
-
+        
         produto = ProdutoResponseSchema.model_validate(db_produto, from_attributes=True)
         return produto
 

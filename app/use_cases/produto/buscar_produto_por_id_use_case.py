@@ -1,5 +1,5 @@
 from app.domain.produto.models import Produto
-from app.core.schemas.produto import ProdutoResponseSchema
+from app.core.schemas.produto.produto import ProdutoResponseSchema
 from app.domain.produto.ports import ProdutoOutputPort
 
 class BuscarProdutoPorIdUseCase:

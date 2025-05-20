@@ -4,6 +4,7 @@ from app.adapters.db.database import get_db
 from app.adapters.interfaces.fastapi import produto_router
 from app.adapters.interfaces.fastapi import cliente_router
 from app.adapters.interfaces.fastapi import pagamento_router
+from app.adapters.interfaces.fastapi import pedido_router
 
 app = FastAPI(
     title="Sistema de Autoatendimento da Lanchonete",
@@ -14,6 +15,7 @@ app = FastAPI(
 app.include_router(produto_router.router)
 app.include_router(cliente_router.router)
 app.include_router(pagamento_router.router)
+app.include_router(pedido_router.router)
 
 @app.get("/health")
 def health_check():

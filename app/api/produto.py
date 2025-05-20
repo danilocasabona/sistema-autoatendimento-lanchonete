@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from app.adapters.db.database import get_db
-from app.core.schemas.produto import ProdutoCreateSchema, ProdutoResponseSchema
+from app.core.schemas.produto.produto import ProdutoCreateSchema, ProdutoResponseSchema
 from app.core.enums.categoria import CategoriaEnum
 from app.use_cases.produto.criar_produto_use_case import CriarProdutoUseCase
 from app.use_cases.produto.buscar_produto_por_id_use_case import BuscarProdutoPorIdUseCase

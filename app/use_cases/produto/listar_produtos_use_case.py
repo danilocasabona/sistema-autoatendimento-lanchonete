@@ -1,7 +1,7 @@
 from typing import List
 from app.domain.produto.models import Produto
 from app.domain.produto.ports import ProdutoRepositoryPort
-from app.core.schemas.produto import ProdutoResponseSchema
+from app.core.schemas.produto.produto import ProdutoResponseSchema
 
 
 class ListarProdutosUseCase:

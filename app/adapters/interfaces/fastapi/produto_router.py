@@ -3,12 +3,12 @@ from fastapi import APIRouter, HTTPException, Depends
 from fastapi import Response
 from app.adapters.out.produto_repository import ProdutoRepository
 from app.use_cases.produto.criar_produto_use_case import CriarProdutoUseCase
-from app.core.schemas.produto import ProdutoCreateSchema, ProdutoResponseSchema
+from app.core.schemas.produto.produto import ProdutoCreateSchema, ProdutoResponseSchema
 from app.use_cases.produto.listar_produtos_use_case import ListarProdutosUseCase
 from app.use_cases.produto.buscar_produto_por_id_use_case import BuscarProdutoPorIdUseCase
 from app.use_cases.produto.atualizar_produto_use_case import AtualizarProdutoUseCase
 from app.use_cases.produto.deletar_produto_use_case import DeletarProdutoUseCase
-from app.core.schemas.produto import ProdutoUpdateSchema
+from app.core.schemas.produto.produto import ProdutoUpdateSchema
 from app.adapters.db.database import get_db
 from sqlalchemy.orm import Session
 from app.use_cases.produto.listar_produtos_por_categoria_use_case import ListarProdutosPorCategoriaUseCase

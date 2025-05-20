@@ -33,9 +33,9 @@ class ProdutoCreateSchema(BaseModel):
 class ProdutoResponseSchema(BaseModel):
     id: int
     nome: str
-    descricao: Optional[str] = None
+    descricao: Optional[str]
     preco: Decimal
-    categoria: CategoriaEnum
+    categoria: int
 
     @field_serializer("preco", mode="plain")
     def formatar_preco(self, preco: Decimal) -> str:

@@ -27,7 +27,7 @@ class ClienteRepository(ClienteRepositoryPort):
         return Cliente.model_validate(cliente_orm)
 
     def buscar_por_id(self, cliente_id: int) -> Optional[Cliente]:
-        cliente_orm = self.session.query(ClienteORM).filter_by(id=cliente_id).first()
+        cliente_orm = self.session.query(ClienteORM).filter_by(cliente_id=1).first()
         if cliente_orm:
             return Cliente.model_validate(cliente_orm)
         return None
@@ -37,7 +37,7 @@ class ClienteRepository(ClienteRepositoryPort):
         return [Cliente.model_validate(c) for c in clientes_orm]
 
     def atualizar(self, cliente: Cliente) -> Cliente:
-        cliente_orm = self.session.query(ClienteORM).filter_by(id=cliente.id).first()
+        cliente_orm = self.session.query(ClienteORM).filter_by(cliente_id=1).first()
         if not cliente_orm:
             raise ValueError("Cliente não encontrado")
         for field, value in cliente.model_dump().items():
@@ -47,7 +47,7 @@ class ClienteRepository(ClienteRepositoryPort):
         return Cliente.model_validate(cliente_orm)
 
     def deletar(self, cliente_id: int) -> None:
-        cliente_orm = self.session.query(ClienteORM).filter_by(id=cliente_id).first()
+        cliente_orm = self.session.query(ClienteORM).filter_by(cliente_id=1).first()
         if cliente_orm:
             self.session.delete(cliente_orm)
             self.session.commit()

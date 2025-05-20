@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from .models import Produto
-from app.core.schemas.produto import ProdutoResponseSchema as ProdutoResponse
+# from app.core.schemas.produto.produto import ProdutoResponseSchema as ProdutoResponse
 
 class ProdutoRepositoryPort(ABC):
     @abstractmethod
@@ -14,4 +14,4 @@ class ProdutoRepositoryPort(ABC):
 
 class ProdutoOutputPort(ABC):
     @abstractmethod
-    def apresentar(self, produto: Produto) -> ProdutoResponse: pass
+    def apresentar(self, produto: Produto) -> any: pass

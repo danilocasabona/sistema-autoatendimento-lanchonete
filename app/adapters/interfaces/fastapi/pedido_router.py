@@ -12,7 +12,7 @@ router = APIRouter(prefix="/pedidos", tags=["pedidos"])
 def get_pedido_repository(db: Session = Depends(get_db)) -> PedidoRepository:
     return PedidoRepository(db_session=db)
 
-@router.post("/", response_model=PedidoResponseSchema, status_code=201)
+@router.post(path="" , response_model=PedidoResponseSchema, status_code=201)
 def criar_pedido(pedido: PedidoCreateSchema, repository: PedidoRepository = Depends(get_pedido_repository)):
     try:
         use_case = PedidoUseCase(repository)
@@ -21,7 +21,7 @@ def criar_pedido(pedido: PedidoCreateSchema, repository: PedidoRepository = Depe
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/", response_model=list[PedidoResponseSchema])
+@router.get("/list", response_model=list[PedidoResponseSchema])
 def listar_pedidos(repository: PedidoRepository = Depends(get_pedido_repository)):
     try:
         use_case = PedidoUseCase(repository)
