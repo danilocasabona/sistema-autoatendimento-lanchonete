@@ -1,8 +1,9 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from app.domain.cliente.models import Cliente
-from app.domain.cliente.ports import ClienteRepositoryPort
+
+from app.core.domain.cliente.models import Cliente
+from app.core.domain.cliente.ports import ClienteRepositoryPort
 from app.core.models import Cliente as ClienteORM
 
 class ClienteRepository(ClienteRepositoryPort):

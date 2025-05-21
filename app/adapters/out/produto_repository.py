@@ -1,9 +1,10 @@
-from app.domain.produto.ports import ProdutoRepositoryPort
-from app.domain.produto.models import Produto
 from decimal import Decimal
+from sqlalchemy.exc import IntegrityError
+
+from app.core.domain.produto.ports import ProdutoRepositoryPort
+from app.core.domain.produto.models import Produto
 from app.core.enums.categoria import CategoriaEnum
 from app.core.models.produto import Produto
-from sqlalchemy.exc import IntegrityError
 from app.core.schemas.produto import ProdutoResponseSchema
 
 class ProdutoRepository(ProdutoRepositoryPort):

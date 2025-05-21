@@ -1,6 +1,6 @@
-from app.core.schemas.produto import ProdutoResponse, ProdutoCreate
-from app.domain.produto.models import Produto
+from app.core.domain.produto.models import Produto
 from app.core.enums.categoria import CategoriaEnum
+from app.core.schemas.produto import ProdutoResponse, ProdutoCreate
 
 def mapear_para_schema(produto: Produto) -> ProdutoResponse:
     return ProdutoResponse(

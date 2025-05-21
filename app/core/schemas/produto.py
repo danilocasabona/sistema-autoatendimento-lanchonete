@@ -1,8 +1,8 @@
-from pydantic import BaseModel, field_serializer, field_validator, ConfigDict, Field
-from typing import Optional
-from decimal import Decimal, ROUND_HALF_UP
 import bleach
 from enum import Enum
+from decimal import Decimal, ROUND_HALF_UP
+from pydantic import BaseModel, field_serializer, field_validator, ConfigDict, Field
+from typing import Optional
 
 class CategoriaEnum(str, Enum):
     lanche = "Lanche"
