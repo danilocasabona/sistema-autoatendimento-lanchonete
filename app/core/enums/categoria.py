@@ -1,7 +1,7 @@
 from enum import Enum
 
 class CategoriaEnum(str, Enum):
-    LANCHE = "Lanche"
-    ACOMPANHAMENTO = "Acompanhamento"
-    BEBIDA = "Bebida"
-    SOBREMESA = "Sobremesa"
+    Lanche = "Lanche"
+    Acompanhamento = "Acompanhamento"
+    Bebida = "Bebida"
+    Sobremesa = "Sobremesa"

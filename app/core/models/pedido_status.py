@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String
-from app.adapters.db.database import Base
+
+from app.infrastructure.db.database import Base
 
 class PedidoStatus(Base):
     __tablename__ = "pedido_status"

@@ -1,7 +1,8 @@
-from typing import List, Optional
-from app.domain.cliente.models import Cliente
-from app.domain.cliente.ports import ClienteRepositoryPort
 from fastapi import HTTPException
+from typing import List, Optional
+
+from app.core.domain.cliente.models import Cliente
+from app.core.domain.cliente.ports import ClienteRepositoryPort
 
 class ClienteService:
     def __init__(self, repository: ClienteRepositoryPort):

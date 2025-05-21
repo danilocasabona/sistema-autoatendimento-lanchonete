@@ -1,10 +1,9 @@
 from sqlalchemy import Column, Integer, ForeignKey, Time
 from sqlalchemy.orm import relationship
-from app.adapters.db.database import Base
+
+from app.infrastructure.db.database import Base
 
 class Pedido(Base):
-    
-    
     __tablename__ = "pedido"
 
     pedido_id = Column(Integer, primary_key=True)  
