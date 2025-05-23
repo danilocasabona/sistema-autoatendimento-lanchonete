@@ -47,7 +47,7 @@ class ClienteUseCase:
         
         clienteAtualizado: Cliente = self.cliente_repository.atualizar_cliente(cliente=clienteEntity)
         clienteResponse: ClienteResponseSchema = ClienteResponseSchema(cliente_id=clienteAtualizado.cliente_id, nome=clienteAtualizado.nome, email=clienteAtualizado.email, telefone=clienteAtualizado.telefone, cpf=clienteAtualizado.cpf)
-        var_dump_die(clienteResponse)
+
         return clienteResponse
 
     def deletar_cliente(self, cliente_id: int) -> None:
