@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from app.core.domain.cliente.models import Cliente
 from app.core.domain.cliente.ports import ClienteRepositoryPort
+from app.core.utils.debug import var_dump_die
 
 class ClienteService:
     def __init__(self, repository: ClienteRepositoryPort):

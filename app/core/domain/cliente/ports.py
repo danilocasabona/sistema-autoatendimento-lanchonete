@@ -5,7 +5,7 @@ from app.core.domain.cliente.models import Cliente
 
 class ClienteRepositoryPort(ABC):
     @abstractmethod
-    def criar(self, cliente: Cliente) -> Cliente:
+    def criarCliente(self, cliente: Cliente) -> Cliente:
         pass
 
     @abstractmethod
@@ -21,9 +21,9 @@ class ClienteRepositoryPort(ABC):
         pass
 
     @abstractmethod
-    def atualizar(self, cliente: Cliente) -> Cliente:
+    def atualizar_cliente(self, cliente: Cliente) -> Cliente:
         pass
 
     @abstractmethod
-    def deletar(self, cliente_id: int) -> None:
+    def deletar_cliente(self, cliente_id: int) -> None:
         pass
