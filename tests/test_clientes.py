@@ -1,9 +1,9 @@
 import pytest
-from app.adapters.db.database import SessionLocal
+from app.infrastructure.db.database import SessionLocal
 from app.core.models.cliente import Cliente as ClienteORM
 from app.core.models.produto import Produto as ProdutoORM
 from fastapi.testclient import TestClient
-from app.api.main import app
+from app.main import app
 import uuid
 
 client = TestClient(app)

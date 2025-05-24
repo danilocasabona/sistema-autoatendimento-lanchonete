@@ -14,9 +14,8 @@ class ClienteCreateSchema(BaseModel):
         return v
 
 class ClienteResponseSchema(ClienteCreateSchema):
-    id: int
-    telefone: Optional[str] = None
-
+    cliente_id: int
+    
     model_config = ConfigDict(from_attributes=True)
 
 class ClienteUpdateSchema(BaseModel):

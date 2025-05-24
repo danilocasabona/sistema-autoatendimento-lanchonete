@@ -1,7 +1,7 @@
-from app.domain.pedido.ports import PedidoRepositoryPort
-from app.domain.pedido.ports import Pedido
 from decimal import Decimal
 from sqlalchemy.exc import IntegrityError
+
+from app.core.domain.pedido.ports import PedidoRepositoryPort, Pedido
 
 class PedidoRepository(PedidoRepositoryPort):
     def __init__(self, db_session):

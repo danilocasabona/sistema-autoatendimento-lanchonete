@@ -1,8 +1,7 @@
 from enum import Enum
 
-class PedidoStatusEnum(str, Enum):
+class StatusPedidoEnum(str, Enum):
     Recebido = 1
-    emPreparacao = 2
-    pronto = 3
+    Iniciado = 2
+    Pronto = 3
     Finalizado = 4
-    

@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, DECIMAL, ForeignKey
-from app.adapters.db.database import Base
+
+from app.infrastructure.db.database import Base
 
 class Produto(Base):
     __tablename__ = "produto"
@@ -8,6 +9,5 @@ class Produto(Base):
     nome = Column(String(255), nullable=False)
     descricao = Column(String(255), nullable=False)
     preco = Column(DECIMAL(10, 2), nullable=False)
-    categoria = Column(Integer, nullable=False)
     imagem = Column(String(255), nullable=True)
-    cliente = Column(Integer, ForeignKey("cliente.cliente_id"), nullable=True)
+    categoria = Column(Integer, ForeignKey("categoria_produto.categoria_produto_id"), nullable=False)

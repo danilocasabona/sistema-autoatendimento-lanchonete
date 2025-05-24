@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Session
-from app.core.models.cliente import Cliente
-from app.core.schemas.cliente import ClienteCreateSchema, ClienteUpdateSchema
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
+
+from app.core.models.cliente import Cliente
+from app.core.schemas.cliente import ClienteCreateSchema, ClienteUpdateSchema
 
 def get_cliente_by_id(db: Session, cliente_id: int):
     return db.query(Cliente).filter(Cliente.id == cliente_id).first()

@@ -1,8 +1,8 @@
-from pydantic import BaseModel, field_serializer, field_validator, ConfigDict, Field
-from typing import Optional
-from decimal import Decimal, ROUND_HALF_UP
 import bleach
 from enum import Enum
+from decimal import Decimal, ROUND_HALF_UP
+from pydantic import BaseModel, field_serializer, field_validator, ConfigDict, Field
+from typing import Optional
 
 class CategoriaEnum(str, Enum):
     lanche = "Lanche"
@@ -14,7 +14,8 @@ class CategoriaEnum(str, Enum):
 class ProdutoCreateSchema(BaseModel):
     nome: str = Field(..., min_length=3, max_length=100)
     descricao: Optional[str] = None
-    categoria: CategoriaEnum = Field(..., description="Categoria do produto")
+    #categoria: CategoriaEnum = Field(..., description="Categoria do produto")
+    categoria: int
 
     @field_validator("descricao", mode="before")
     @classmethod
@@ -31,11 +32,11 @@ class ProdutoCreateSchema(BaseModel):
 
 # 🧩 Schema para saída de dados (resposta da API)
 class ProdutoResponseSchema(BaseModel):
-    id: int
+    produto_id: int
     nome: str
     descricao: Optional[str] = None
     preco: Decimal
-    categoria: CategoriaEnum
+    categoria: int
 
     @field_serializer("preco", mode="plain")
     def formatar_preco(self, preco: Decimal) -> str:
@@ -48,7 +49,8 @@ class ProdutoResponseSchema(BaseModel):
 class ProdutoUpdateSchema(BaseModel):
     nome: Optional[str] = Field(None, min_length=3, max_length=100)
     descricao: Optional[str] = None
-    categoria: Optional[CategoriaEnum] = None
+    #categoria: Optional[CategoriaEnum] = None
+    categoria: Optional[int] = None
     preco: Optional[Decimal] = Field(None, gt=0, description="Preço deve ser maior que zero")
 
     @field_validator("descricao", mode="before")

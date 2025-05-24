@@ -53,21 +53,47 @@ git clone <url-do-repositorio>
 cd project_root
 ```
 
-2. Crie e ative o ambiente virtual (opcional, mas recomendado)
+2. Execute o docker do projeto
 
-2.1. Acesse o ambiente do container da aplicação
+2.1 Acesse a pasta do docker
+```bash
+cd .docker
+```
+2.1 Necessário criar uma pasta onde vai ser armazenado os dados oriundos do banco, gerenciado pelo nosso container.
+ > Utilizamos o arquivo Makefile para isso.
+```bash
+make create-folder
+```
+2.2 Crie os containers da aplicação:
+```bash
+make create-docker
+```
+Ao finalizar a criação do docker, vamos subir os containers:
+```bash
+make run-docker
+```
+
+Com os containers ativos, precisamos dar a permissão para escrever na pasta do banco de dados:
+
+```bash
+make permission-folder
+```
+
+3. Crie e ative o ambiente virtual (opcional, mas recomendado)
+
+3.1. Acesse o ambiente do container da aplicação
 ```bash
 docker exec -it lanchonete_app /bin/bash
 ```
 
-2.2. Dê inicio a aplicação
+3.2. Dê inicio a aplicação
 ```bash
 python -m venv venv
 source venv/bin/activate  # Linux/macOS
 venv\Scripts\activate    # Windows
 ```
 
-3. Instale as dependências
+3.3. Instale as dependências
 
 ```bash
 pip install -r ./.docker/bin/webserver/config/requirements.txt
