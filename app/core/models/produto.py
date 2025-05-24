@@ -10,4 +10,4 @@ class Produto(Base):
     descricao = Column(String(255), nullable=False)
     preco = Column(DECIMAL(10, 2), nullable=False)
     imagem = Column(String(255), nullable=True)
-    categoria = Column(Integer, ForeignKey("categoria.categoria_id"), nullable=False)
+    categoria = Column(Integer, ForeignKey("categoria_produto.categoria_produto_id"), nullable=False)

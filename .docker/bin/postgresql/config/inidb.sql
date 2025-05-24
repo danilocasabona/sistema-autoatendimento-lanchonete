@@ -32,10 +32,10 @@ create table pedido(
 	constraint fk_pedido_status foreign key(status) references pedido_status(pedido_status_id)
 );
 
-create table produto_tipo(
-	produto_tipo_id INT,
+create table categoria_produto(
+	categoria_produto_id INT,
 	nome VARCHAR(255) not null,
-	primary key(produto_tipo_id)
+	primary key(categoria_produto_id)
 );
 
 create table produto(
@@ -46,7 +46,7 @@ create table produto(
 	categoria INT,
 	imagem VARCHAR(255) NULL,
 	primary key(produto_id),
-	constraint fk_produto_tipo FOREIGN key(categoria) references produto_tipo(produto_tipo_id)
+	constraint fk_categoria_produto FOREIGN key(categoria) references categoria_produto(categoria_produto_id)
 );
 
 create table pedido_produtos(
@@ -66,11 +66,11 @@ create table pagamento(
 	constraint fk_pedido foreign key(pedido) references pedido(pedido_id)
 );
 
-/** insert produto_tipo */
-insert into produto_tipo(produto_tipo_id, nome ) values (1, 'Lanche');
-insert into produto_tipo(produto_tipo_id, nome ) values (2, 'Acompanhamento');
-insert into produto_tipo(produto_tipo_id, nome ) values (3, 'Bebida');
-insert into produto_tipo(produto_tipo_id, nome ) values (4, 'Sobremesa');
+/** insert categoria_produto */
+insert into categoria_produto(categoria_produto_id, nome ) values (1, 'Lanche');
+insert into categoria_produto(categoria_produto_id, nome ) values (2, 'Acompanhamento');
+insert into categoria_produto(categoria_produto_id, nome ) values (3, 'Bebida');
+insert into categoria_produto(categoria_produto_id, nome ) values (4, 'Sobremesa');
 
 /** insert pedido_status */
 insert into pedido_status(pedido_status_id, status ) values (1, 'Recebido');

@@ -5,13 +5,16 @@ from app.core.schemas.produto import ProdutoResponseSchema as ProdutoResponse
 
 class ProdutoRepositoryPort(ABC):
     @abstractmethod
-    def salvar(self, produto: Produto): pass
+    def criar_produto(self, produto: Produto): pass
+    
     @abstractmethod
     def listar_todos(self): pass
+    
     @abstractmethod
     def buscar_por_id(self, produto_id: int): pass
+    
     @abstractmethod
-    def deletar(self, produto_id: int): pass
+    def deletar_produto(self, produto_id: int): pass
 
 class ProdutoOutputPort(ABC):
     @abstractmethod
