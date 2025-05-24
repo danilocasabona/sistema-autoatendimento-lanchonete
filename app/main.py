@@ -1,7 +1,4 @@
-from app.infrastructure.api.fastapi import app, Depends
-
-#from app.infrastructure.db.database import get_db
-#from sqlalchemy.orm import Session
+from app.infrastructure.api.fastapi import app
 
 # import
 from app.adapters.entrance import check_router
