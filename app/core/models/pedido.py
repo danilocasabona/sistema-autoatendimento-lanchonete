@@ -14,13 +14,13 @@ class Pedido(Base):
     produto_3 = Column(Integer, ForeignKey("produto.produto_id"), nullable=True)
     produto_4 = Column(Integer, ForeignKey("produto.produto_id"), nullable=True)
 
-    status = Column(Integer, ForeignKey("pedido_status.pedido_status_id"), nullable=True)
+    status = Column(Integer, ForeignKey("status_pedido.id"), nullable=True)
     
     data_criacao = Column(Time, nullable=False)
     data_finalizacao = Column(Time, nullable=True)
 
     cliente_rel = relationship("Cliente", backref="pedidos")
-    status_rel = relationship("PedidoStatus", backref="pedidos")
+    status_rel = relationship("StatusPedido", backref="pedidos")
     produto_1_rel = relationship("Produto", foreign_keys=[produto_1])
     produto_2_rel = relationship("Produto", foreign_keys=[produto_2])
     produto_3_rel = relationship("Produto", foreign_keys=[produto_3])
