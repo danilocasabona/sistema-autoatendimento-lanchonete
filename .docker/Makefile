@@ -4,18 +4,27 @@
 create-folder:
 	mkdir -p data/postgres/pgdata
 
-create-docker:
+create-clear-docker:
 	docker compose build --no-cache
 
-run-docker:
+create-docker:
+	docker compose build
+
+run-debug-docker:
 	docker compose up -d
+
+run-docker:
+	docker compose up
 
 permission-folder:
 	sudo chmod 777 data/postgres/pgdata -R
 
 # parar o projeto
-stop-docker:
+stop-clear-docker:
 	docker compose down -v
+
+stop-docker:
+	docker compose down
 
 clean-docker:
 	sudo rm -r data/postgres -R

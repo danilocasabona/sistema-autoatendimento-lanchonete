@@ -26,6 +26,7 @@ create table pedido(
 	cliente_id INT,
 	status INT not null,
 	data_criacao time not null,
+	data_alteracao time null,
 	data_finalizacao time null,
 	primary key(pedido_id),
 	constraint fk_cliente foreign key(cliente_id) references cliente(cliente_id),
