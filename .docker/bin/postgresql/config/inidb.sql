@@ -1,11 +1,3 @@
-create table funcionario(
-	funcionario_id INT,
-	nome VARCHAR(255) not null,
-	senha VARCHAR(110) not null,
-	cargo VARCHAR(255) not null,
-	primary KEY(funcionario_id)
-);
-
 create table cliente(
 	cliente_id INT generated always as identity,
 	nome VARCHAR(255) null,
@@ -68,13 +60,13 @@ create table pagamento(
 );
 
 /** insert categoria_produto */
-insert into categoria_produto(categoria_produto_id, nome ) values (1, 'Lanche');
-insert into categoria_produto(categoria_produto_id, nome ) values (2, 'Acompanhamento');
-insert into categoria_produto(categoria_produto_id, nome ) values (3, 'Bebida');
-insert into categoria_produto(categoria_produto_id, nome ) values (4, 'Sobremesa');
+insert into categoria_produto(categoria_produto_id, nome) values (1, 'Lanche');
+insert into categoria_produto(categoria_produto_id, nome) values (2, 'Acompanhamento');
+insert into categoria_produto(categoria_produto_id, nome) values (3, 'Bebida');
+insert into categoria_produto(categoria_produto_id, nome) values (4, 'Sobremesa');
 
 /** insert pedido_status */
-insert into status_pedido(descricao ) values ('Recebido');
-insert into status_pedido(descricao ) values ('Em prepação');
-insert into status_pedido(descricao ) values ('Pronto');
-insert into status_pedido(descricao ) values ('Finalizado');
+insert into status_pedido(descricao) values ('Recebido');
+insert into status_pedido(descricao) values ('Em prepação');
+insert into status_pedido(descricao) values ('Pronto');
+insert into status_pedido(descricao) values ('Finalizado');
