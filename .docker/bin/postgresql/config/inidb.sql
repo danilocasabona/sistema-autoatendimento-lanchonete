@@ -1,11 +1,3 @@
-create table funcionario(
-	funcionario_id INT,
-	nome VARCHAR(255) not null,
-	senha VARCHAR(110) not null,
-	cargo VARCHAR(255) not null,
-	primary KEY(funcionario_id)
-);
-
 create table cliente(
 	cliente_id INT generated always as identity,
 	nome VARCHAR(255) null,
@@ -15,10 +7,10 @@ create table cliente(
 	primary KEY(cliente_id)
 );
 
-create table pedido_status(
-	pedido_status_id INT,
-	status VARCHAR(50) not null,
-	primary key(pedido_status_id)
+create table status_pedido(
+	id INT generated always as identity,
+	descricao VARCHAR(50) not null,
+	primary key(id)
 );
 
 create table pedido(
@@ -26,10 +18,11 @@ create table pedido(
 	cliente_id INT,
 	status INT not null,
 	data_criacao time not null,
+	data_alteracao time null,
 	data_finalizacao time null,
 	primary key(pedido_id),
 	constraint fk_cliente foreign key(cliente_id) references cliente(cliente_id),
-	constraint fk_pedido_status foreign key(status) references pedido_status(pedido_status_id)
+	constraint fk_status_pedido foreign key(status) references status_pedido(id)
 );
 
 create table categoria_produto(
@@ -67,13 +60,13 @@ create table pagamento(
 );
 
 /** insert categoria_produto */
-insert into categoria_produto(categoria_produto_id, nome ) values (1, 'Lanche');
-insert into categoria_produto(categoria_produto_id, nome ) values (2, 'Acompanhamento');
-insert into categoria_produto(categoria_produto_id, nome ) values (3, 'Bebida');
-insert into categoria_produto(categoria_produto_id, nome ) values (4, 'Sobremesa');
+insert into categoria_produto(categoria_produto_id, nome) values (1, 'Lanche');
+insert into categoria_produto(categoria_produto_id, nome) values (2, 'Acompanhamento');
+insert into categoria_produto(categoria_produto_id, nome) values (3, 'Bebida');
+insert into categoria_produto(categoria_produto_id, nome) values (4, 'Sobremesa');
 
 /** insert pedido_status */
-insert into pedido_status(pedido_status_id, status ) values (1, 'Recebido');
-insert into pedido_status(pedido_status_id, status ) values (2, 'Em prepação');
-insert into pedido_status(pedido_status_id, status ) values (3, 'Pronto');
-insert into pedido_status(pedido_status_id, status ) values (4, 'Finalizado');
+insert into status_pedido(descricao) values ('Recebido');
+insert into status_pedido(descricao) values ('Em prepação');
+insert into status_pedido(descricao) values ('Pronto');
+insert into status_pedido(descricao) values ('Finalizado');

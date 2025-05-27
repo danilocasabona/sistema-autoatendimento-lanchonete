@@ -2,18 +2,19 @@ from decimal import Decimal
 from sqlalchemy.exc import IntegrityError
 
 from app.core.domain.pedido.ports import PedidoRepositoryPort, Pedido
+from app.core.models.pedido import Pedido as PedidoORM
 
 class PedidoRepository(PedidoRepositoryPort):
     def __init__(self, db_session):
         self.db_session = db_session
 
     def criarPedido(self, pedido: Pedido) -> Pedido:
-
-        self.db_session.add(pedido)
         try:
+            self.db_session.add(pedido)
             self.db_session.commit()
         except IntegrityError as e:
             self.db_session.rollback()
+            
             raise ValueError(f"Erro de integridade ao salvar pedido: {e}")
         self.db_session.refresh(pedido)
 
@@ -42,12 +43,15 @@ class PedidoRepository(PedidoRepositoryPort):
         #self.db_session.flush()
 
     def atualizarPedido(self, pedido: Pedido) -> Pedido:
+        pedido_orm = self.db_session.query(PedidoORM).filter_by(pedido_id=pedido.pedido_id).first()
 
-        try:
-            self.db_session.commit()
-        except IntegrityError as e:
-            self.db_session.rollback()
-            raise ValueError(f"Erro de integridade ao atualizar pedido: {e}")
-        self.db_session.refresh(pedido)
+        if not pedido_orm:
+            raise ValueError("Pedido não encontrado")
+        
+        for field, value in pedido.model_dump().items():
+            setattr(pedido_orm, field, value)
 
-        return pedido
+        self.db_session.commit()
+        self.db_session.refresh(pedido_orm)
+
+        return pedido_orm
