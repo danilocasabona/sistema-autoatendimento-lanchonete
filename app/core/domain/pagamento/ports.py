@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ...core.models import Pagamento
+from app.core.models import Pagamento
 
 class PagamentoRepositoryPort(ABC):
     @abstractmethod
@@ -9,6 +9,6 @@ class PagamentoRepositoryPort(ABC):
     @abstractmethod
     def buscar_pagamento_por_id(self, codigo_pagamento: str): pass
     @abstractmethod
-    def deletar(self, codigo_pagamento: str): pass
+    def atualizar_pagamento(self, codigo: Pagamento): pass
     @abstractmethod
-    def atualizar_pagamento(self, codigo_pagamento: Pagamento): pass
+    def deletar_pagamento(self, codigo_pagamento: str): pass

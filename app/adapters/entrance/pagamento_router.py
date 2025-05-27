@@ -1,73 +1,53 @@
-<<<<<<< HEAD:app/adapters/interfaces/fastapi/pagamento_router.py
-from fastapi import APIRouter, HTTPException, Depends
-from fastapi import Response
+from fastapi import APIRouter, HTTPException, Depends, Response
 from app.adapters.out.pagamento_repository import PagamentoRepository
-from app.use_cases.pagamento.pagamento_use_case import PagamentoUseCase
+from app.core.use_cases.pagamento.pagamento_use_case import PagamentoUseCase
 from app.core.schemas.pagamento import *
-from app.adapters.db.database import get_db
+from app.infrastructure.db.database import get_db
 from sqlalchemy.orm import Session
-
 
 router = APIRouter(prefix="/pagamento", tags=["pagamento"])
 
 def get_pagamento_repository(db: Session = Depends(get_db)) -> PagamentoRepository:
     return PagamentoRepository(db_session=db)
 
-@router.post("/pedido", response_model=PagamentoResponseSchema, status_code=201, summary="Efetuar pagamento do pedido do cliente")
-def criar_pagamento(pedido_id: PagamentoCreateSchema, repository: PagamentoRepository = Depends(get_pagamento_repository)):
-    
+@router.get("/", response_model=list[PagamentoResponseSchema], summary="Listar todos os pagamentos realizado")
+def listar_pagamentos(repository: PagamentoRepository = Depends(get_pagamento_repository)):
     try:
-        use_case = PagamentoUseCase(repository)
-        pagamento_efetuado = use_case.criar_pagamento(pagamento_request=pedido_id)
-        return pagamento_efetuado
+        return PagamentoUseCase(repository).listar_todos_pagamentos()
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# @router.get("/", response_model=list[PedidoResponseSchema])
-# def listar_pedidos(repository: PagamentoRepository = Depends(get_pedido_repository)):
-#     try:
-#         use_case = PedidoUseCase(repository)
-#         return use_case.listar_todos()
-#     except Exception as e:
-#         raise HTTPException(status_code=400, detail=str(e))
+@router.post("/", response_model=PagamentoResponseSchema, status_code=201, summary="Criar pagamento do pedido")
+def efetuar_pagamento_pedido(pedido_id: PagamentoCreateSchema, repository: PagamentoRepository = Depends(get_pagamento_repository)):
+    try:
+        return PagamentoUseCase(repository).criar_pagamento(pedido_pagamento=pedido_id)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-# @router.get("/{pedido_id}", response_model=PedidoResponseSchema)
-# def buscar_pedido(pedido_id: int, repository: PagamentoRepository = Depends(get_pedido_repository)):
-#     try:
-#         use_case = PedidoUseCase(repository)
-#         return use_case.buscar_por_id(pedido_id)
-#     except Exception as e:
-#         raise HTTPException(status_code=404, detail=str(e))
+@router.get("/{codigo_pagamento}", response_model=PagamentoResponseSchema)
+def buscar_pagamento(codigo_pagamento: str, repository: PagamentoRepository = Depends(get_pagamento_repository)):
+    
+    try:
+        return PagamentoUseCase(repository).buscar_pagamento_por_id(codigo_pagamento=codigo_pagamento)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
-# @router.put("/{pedido_id}", response_model=PedidoResponseSchema)
-# def atualizar_pedido(pedido_id: int, pedido: PedidoAtualizaSchema, repository: PagamentoRepository = Depends(get_pedido_repository)):
-#     try:
-#         use_case = PedidoUseCase(repository)
-#         return use_case.atualiza(pedido_id, pedidoRequest=pedido)
-#     except ValueError as e:
-#         raise HTTPException(status_code=404, detail=str(e))
-#     except Exception as e:
-#         raise HTTPException(status_code=400, detail=str(e))
+@router.put("/{codigo_pagamento}", response_model=PagamentoResponseSchema)
+def atualizar_pagamento(codigo_pagamento: str, pagamento_data: PagamentoAtualizaSchema, repository: PagamentoRepository = Depends(get_pagamento_repository)):
 
-# @router.delete("/{pedido_id}")
-# def deletar_pedido(pedido_id: int, repository: PagamentoRepository = Depends(get_pedido_repository)):
-#     try:
-#         use_case = PedidoUseCase(repository)
-#         use_case.deletar(pedido_id)
-#         return Response(status_code=204)
-#     except Exception as e:
-#         raise HTTPException(status_code=404, detail=str(e))
-=======
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import JSONResponse
-from sqlalchemy.orm import Session
+    try:
+        return PagamentoUseCase(repository).atualizar_pagamento(codigo=codigo_pagamento, pagamento_request=pagamento_data)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-from app.infrastructure.db.database import get_db
-from app.core.schemas.pagamento import PagamentoSchemas
-
-router = APIRouter(prefix="/pagamento", tags=["pagamento"])
-
-@router.post('/pedido')
-def pagamento_pedido(pedido_id: PagamentoSchemas, db: Session = Depends(get_db)):
-    return {'status_code': 200, 'pedido': pedido_id }
->>>>>>> a46bd34a851478509f221f283c95751bffbe1290:app/adapters/entrance/pagamento_router.py
+@router.delete("/{codigo_pagamento}")
+def deletar_pagamento(codigo_pagamento: str, repository: PagamentoRepository = Depends(get_pagamento_repository)):
+    try:
+        PagamentoUseCase(repository).deletar_pagamento(codigo_pagamento=codigo_pagamento)
+        return Response(status_code=204)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))

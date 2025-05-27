@@ -1,21 +1,16 @@
 from pydantic import BaseModel
+from typing import Optional
+from app.core.enums.status_pagamento import PagamentoStatusEnum
 
-<<<<<<< HEAD
 class PagamentoCreateSchema(BaseModel):
     pedido_id: int
     
 class PagamentoResponseSchema(BaseModel):
+    pedido_id: int
     codigo_pagamento:str
-=======
-class PagamentoSchemas(BaseModel):
+    status: str
+    
+class PagamentoAtualizaSchema(BaseModel):
     pedido_id: int
-
-class ResponsePagamentoSchemas(BaseModel):
-    pedido_id: int
-    cliente: int
-    produto_1: int
-    produto_2: int
-    produto_3: int
-    produto_4: int
-    status: int
->>>>>>> a46bd34a851478509f221f283c95751bffbe1290
+    codigo_pagamento:str
+    status: str
