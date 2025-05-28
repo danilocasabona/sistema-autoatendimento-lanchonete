@@ -6,7 +6,6 @@ from app.core.domain.status_pedido.ports import StatusPedidoRepositoryPort
 from app.core.domain.status_pedido.models import StatusPedido
 from app.core.models.status_pedido import StatusPedido as StatusPedidoORM
 from app.core.schemas.status_pedido import StatusPedidoResponseSchema
-from app.core.utils.debug import var_dump_die
 
 class StatusPedidoRepository(StatusPedidoRepositoryPort):
     def __init__(self, db_session: Session):

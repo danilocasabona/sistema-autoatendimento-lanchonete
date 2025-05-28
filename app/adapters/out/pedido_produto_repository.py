@@ -1,7 +1,6 @@
-from app.core.domain.pedido_produto.ports import PedidoProdutoRepositoryPort, PedidoProduto
-from app.core.schemas.pedido_produto import ProdutoPedidoResponseSchema
-from app.core.utils.debug import var_dump_die
 from sqlalchemy.exc import IntegrityError
+
+from app.core.domain.pedido_produto.ports import PedidoProdutoRepositoryPort, PedidoProduto
 
 class PedidoProdutoRepository(PedidoProdutoRepositoryPort):
     def __init__(self, db_session):

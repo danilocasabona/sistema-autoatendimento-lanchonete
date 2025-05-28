@@ -3,11 +3,8 @@ from fastapi import Response
 from sqlalchemy.orm import Session
 
 from app.adapters.out.produto_repository import ProdutoRepository
-from app.core.enums.categoria import CategoriaEnum
 from app.core.use_cases.produto.produto_use_case import ProdutoUseCase
-
 from app.core.schemas.produto import ProdutoCreateSchema, ProdutoResponseSchema, ProdutoUpdateSchema
-
 from app.infrastructure.db.database import get_db
 
 router = APIRouter(prefix="/produtos", tags=["produtos"])

@@ -1,14 +1,11 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from pydantic import EmailStr
 
 from app.core.domain.cliente.models import Cliente
 from app.core.domain.cliente.ports import ClienteRepositoryPort
 from app.core.models.cliente import Cliente as ClienteORM
 from app.core.schemas.cliente import ClienteResponseSchema
-
-from app.core.utils.debug import var_dump_die
 
 class ClienteRepository(ClienteRepositoryPort):
     def __init__(self, db_session: Session):

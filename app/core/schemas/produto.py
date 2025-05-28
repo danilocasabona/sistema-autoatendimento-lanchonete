@@ -1,20 +1,15 @@
 import bleach
-from enum import Enum
 from decimal import Decimal, ROUND_HALF_UP
 from pydantic import BaseModel, field_serializer, field_validator, ConfigDict, Field
 from typing import Optional
 
-class CategoriaEnum(str, Enum):
-    lanche = "Lanche"
-    acompanhamento = "Acompanhamento"
-    bebida = "Bebida"
-    sobremesa = "Sobremesa"
+from app.core.enums.categoria_produto import CategoriaProdutoEnum
+from app.core.schemas.categoria_produto import CategoriaProdutoResponseSchema
 
 # 🧩 Schema para entrada de dados (criação de produto)
 class ProdutoCreateSchema(BaseModel):
     nome: str = Field(..., min_length=3, max_length=100)
     descricao: Optional[str] = None
-    #categoria: CategoriaEnum = Field(..., description="Categoria do produto")
     categoria: int
 
     @field_validator("descricao", mode="before")
@@ -36,7 +31,7 @@ class ProdutoResponseSchema(BaseModel):
     nome: str
     descricao: Optional[str] = None
     preco: Decimal
-    categoria: int
+    categoria: CategoriaProdutoResponseSchema
 
     @field_serializer("preco", mode="plain")
     def formatar_preco(self, preco: Decimal) -> str:
@@ -49,8 +44,7 @@ class ProdutoResponseSchema(BaseModel):
 class ProdutoUpdateSchema(BaseModel):
     nome: Optional[str] = Field(None, min_length=3, max_length=100)
     descricao: Optional[str] = None
-    #categoria: Optional[CategoriaEnum] = None
-    categoria: Optional[int] = None
+    categoria: Optional[CategoriaProdutoEnum] = None
     preco: Optional[Decimal] = Field(None, gt=0, description="Preço deve ser maior que zero")
 
     @field_validator("descricao", mode="before")
