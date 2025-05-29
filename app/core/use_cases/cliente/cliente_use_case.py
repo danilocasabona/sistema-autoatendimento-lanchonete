@@ -1,7 +1,6 @@
 from app.core.domain.cliente.ports import ClienteRepositoryPort
 from app.core.domain.cliente.models import Cliente
 from app.core.schemas.cliente import ClienteCreateSchema, ClienteResponseSchema, ClienteUpdateSchema
-from app.core.utils.debug import var_dump_die
 
 class ClienteUseCase:
     def __init__(self, cliente_repository: ClienteRepositoryPort):

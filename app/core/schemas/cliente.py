@@ -13,9 +13,13 @@ class ClienteCreateSchema(BaseModel):
             raise ValueError("Nome não pode conter caracteres inválidos como '<' ou '>'.")
         return v
 
-class ClienteResponseSchema(ClienteCreateSchema):
+class ClienteResponseSchema(BaseModel):
     cliente_id: int
-    
+    nome: Optional[str]
+    email: Optional[str]
+    telefone: Optional[str]
+    cpf: Optional[str]
+
     model_config = ConfigDict(from_attributes=True)
 
 class ClienteUpdateSchema(BaseModel):

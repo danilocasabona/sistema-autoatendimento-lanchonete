@@ -26,9 +26,9 @@ create table pedido(
 );
 
 create table categoria_produto(
-	categoria_produto_id INT,
-	nome VARCHAR(255) not null,
-	primary key(categoria_produto_id)
+	id INT generated always as identity,
+	nome VARCHAR(50) not null,
+	primary key(id)
 );
 
 create table produto(
@@ -39,7 +39,7 @@ create table produto(
 	categoria INT,
 	imagem VARCHAR(255) NULL,
 	primary key(produto_id),
-	constraint fk_categoria_produto FOREIGN key(categoria) references categoria_produto(categoria_produto_id)
+	constraint fk_categoria_produto FOREIGN key(categoria) references categoria_produto(id)
 );
 
 create table pedido_produtos(
@@ -60,10 +60,10 @@ create table pagamento(
 );
 
 /** insert categoria_produto */
-insert into categoria_produto(categoria_produto_id, nome) values (1, 'Lanche');
-insert into categoria_produto(categoria_produto_id, nome) values (2, 'Acompanhamento');
-insert into categoria_produto(categoria_produto_id, nome) values (3, 'Bebida');
-insert into categoria_produto(categoria_produto_id, nome) values (4, 'Sobremesa');
+insert into categoria_produto(nome) values ('Lanche');
+insert into categoria_produto(nome) values ('Acompanhamento');
+insert into categoria_produto(nome) values ('Bebida');
+insert into categoria_produto(nome) values ('Sobremesa');
 
 /** insert pedido_status */
 insert into status_pedido(descricao) values ('Recebido');

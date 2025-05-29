@@ -1,7 +1,6 @@
 from app.core.domain.status_pedido.ports import StatusPedidoRepositoryPort
 from app.core.schemas.status_pedido import StatusPedidoCreateSchema, StatusPedidoResponseSchema, StatusPedidoUpdateSchema
 from app.core.domain.status_pedido.models import StatusPedido
-from app.core.utils.debug import var_dump_die
 
 class StatusPedidoUseCase:
     def __init__(self, status_repository: StatusPedidoRepositoryPort):

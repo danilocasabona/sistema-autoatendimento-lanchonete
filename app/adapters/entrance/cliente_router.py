@@ -4,10 +4,7 @@ from typing import List
 
 from app.adapters.out.cliente_repository import ClienteRepository
 from app.infrastructure.db.database import get_db
-
 from app.core.schemas.cliente import ClienteCreateSchema, ClienteResponseSchema, ClienteUpdateSchema
-from app.core.utils.debug import var_dump_die
-
 from app.core.use_cases.cliente.cliente_use_case import ClienteUseCase
 
 router = APIRouter(prefix="/clientes", tags=["clientes"])
