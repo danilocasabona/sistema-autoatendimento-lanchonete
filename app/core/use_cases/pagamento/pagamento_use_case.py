@@ -1,16 +1,14 @@
+import uuid
 from app.core.domain.pagamento.ports import PagamentoRepositoryPort
-from app.core.schemas.pagamento import PagamentoCreateSchema, PagamentoResponseSchema
+from app.core.schemas.pagamento import PagamentoCreateSchema, PagamentoResponseSchema, PagamentoAtualizaSchema
 from app.core.models.pagamento import Pagamento
 from app.core.enums.status_pagamento import PagamentoStatusEnum
-from app.core.schemas.pagamento import PagamentoAtualizaSchema
-import uuid
 
 class PagamentoUseCase:
     def __init__(self, pagamento_repository: PagamentoRepositoryPort):
         self.pagamento_repository = pagamento_repository
 
     def criar_pagamento(self, pedido_pagamento: PagamentoCreateSchema) -> PagamentoResponseSchema:
-        
         codigo_pagamento = str(uuid.uuid4())
         status_pagamento = PagamentoStatusEnum.EmAndamento
        
@@ -31,27 +29,22 @@ class PagamentoUseCase:
         
         return pagamento_response
     
-    def buscar_pagamento_por_id(self, codigo_pagamento: str) -> PagamentoResponseSchema:
+    def buscar_pagamento_por_codigo(self, codigo_pagamento: str) -> PagamentoResponseSchema:
         pagamento_consulta: Pagamento = self.pagamento_repository.buscar_pagamento_por_id(codigo_pagamento=codigo_pagamento)
         pagamento_response: PagamentoResponseSchema = PagamentoResponseSchema(pedido_id=pagamento_consulta.pedido, codigo_pagamento=pagamento_consulta.codigo_pagamento, status=pagamento_consulta.status)
 
         return pagamento_response
     
     def atualizar_pagamento(self, codigo: str, pagamento_request: PagamentoAtualizaSchema) -> PagamentoResponseSchema: 
+        pagamento_entity: Pagamento = self.buscar_pagamento_por_codigo(codigo_pagamento=codigo)
         
-        pagamento_entity: Pagamento = self.buscar_pagamento_por_id(codigo_pagamento=codigo)
         if not pagamento_entity:
             raise ValueError("Pagamento não encontrado")
-        
-        status_pagamento = PagamentoStatusEnum.Aprovado
-        
-        pagamento_entity.pedido_id
-        pagamento_entity.codigo_pagamento
-        pagamento_entity.status = status_pagamento
-        print(pagamento_entity)
-        
-        clienteAtualizado: Pagamento = self.pagamento_repository.atualizar_pagamento(codigo=pagamento_entity)
-        pagamento_response: PagamentoResponseSchema = PagamentoResponseSchema(pedido_id=1, codigo_pagamento='teste', status='1')
+              
+        pagamento_entity.status = pagamento_request.status
+
+        clienteAtualizado: Pagamento = self.pagamento_repository.atualizar_pagamento(codigo=codigo, pagamento=pagamento_entity)
+        pagamento_response: PagamentoResponseSchema = PagamentoResponseSchema(pedido_id=clienteAtualizado.pedido_id, codigo_pagamento=clienteAtualizado.codigo_pagamento, status=clienteAtualizado.status)
 
         return pagamento_response
     

@@ -1,38 +1,31 @@
+from sqlalchemy.exc import IntegrityError
+
 from app.core.domain.pagamento.ports import PagamentoRepositoryPort
 from app.core.models.pagamento import Pagamento
-from sqlalchemy.exc import IntegrityError
 from typing import List, Optional
-from app.core.schemas.pagamento import PagamentoAtualizaSchema
+from app.core.schemas.pagamento import PagamentoResponseSchema
 
 class PagamentoRepository(PagamentoRepositoryPort):
-    
     def __init__(self, db_session):
         
         self.db_session = db_session
 
     def criar_pagamento(self, pagamento: Pagamento) -> Pagamento:
-
         self.db_session.add(pagamento)
         
         try:
-            
-            self.db_session.commit()
-            
-        except IntegrityError as e:
-            
+            self.db_session.commit()           
+        except IntegrityError as e:            
             self.db_session.rollback()
             
             raise ValueError(f"Erro de integridade ao salvar pagamento: {e}")
-        
         self.db_session.refresh(pagamento)
 
         return pagamento
     
     def listar_todos_pagamentos(self)-> List[Pagamento]:
         
-        listagem_pagamento = self.db_session.query(Pagamento).all()
-
-        return listagem_pagamento
+        return self.db_session.query(Pagamento).all()
     
     def buscar_pagamento_por_id(self, codigo_pagamento: str) -> Optional[Pagamento]: 
         consulta_pagamento = self.db_session.query(Pagamento).filter_by(codigo_pagamento=codigo_pagamento).first()
@@ -42,19 +35,24 @@ class PagamentoRepository(PagamentoRepositoryPort):
         
         return consulta_pagamento
     
-    def atualizar_pagamento(self, codigo: Pagamento) -> Pagamento: 
-        pagamento_response = self.db_session.query(Pagamento).filter_by(codigo_pagamento=codigo.codigo_pagamento).first()
-
-        if not pagamento_response:
+    def atualizar_pagamento(self, codigo: str, pagamento: Pagamento) -> Pagamento: 
+        pagamento_entity = self.db_session.query(Pagamento).filter(Pagamento.codigo_pagamento == codigo).first()
+        
+        if not pagamento_entity:
             raise ValueError("Pagamento não encontrado")
         
-        for field, value in codigo.model_dump().items():
-            setattr(pagamento_response, field, value)
-
+        pagamento_entity.status = pagamento.status
+        
         self.db_session.commit()
-        self.db_session.refresh(pagamento_response)
-
-        return pagamento_response
+        self.db_session.refresh(pagamento_entity)
+        
+        response: PagamentoResponseSchema = (PagamentoResponseSchema(
+                pedido_id = pagamento_entity.pedido, 
+                codigo_pagamento = pagamento_entity.codigo_pagamento, 
+                status = pagamento_entity.status
+            ))
+        
+        return response
     
     def deletar_pagamento(self, codigo_pagamento: str): 
         pagamento_deletar = self.db_session.query(Pagamento).filter_by(codigo_pagamento=codigo_pagamento).first()

@@ -4,11 +4,15 @@ from app.core.models import Pagamento
 class PagamentoRepositoryPort(ABC):
     @abstractmethod
     def criar_pagamento(self, pedido_pagamento: Pagamento): pass
+
     @abstractmethod
     def listar_todos_pagamentos(self): pass
+
     @abstractmethod
     def buscar_pagamento_por_id(self, codigo_pagamento: str): pass
+
     @abstractmethod
-    def atualizar_pagamento(self, codigo: Pagamento): pass
+    def atualizar_pagamento(self, codigo: str, pagamento: Pagamento): pass
+
     @abstractmethod
     def deletar_pagamento(self, codigo_pagamento: str): pass
