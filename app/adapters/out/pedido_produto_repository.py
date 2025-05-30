@@ -13,7 +13,7 @@ class PedidoProdutoRepository(PedidoProdutoRepositoryPort):
         except IntegrityError as e:
             self.db_session.rollback()
             
-            raise ValueError(f"Erro de integridade ao salvar pedido: {e}")
+            raise Exception(f"Erro de integridade ao salvar produtos no pedido: {e}")
         self.db_session.refresh(pedidoProduto)
 
         return pedidoProduto

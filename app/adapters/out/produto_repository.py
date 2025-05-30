@@ -26,7 +26,8 @@ class ProdutoRepository(ProdutoRepositoryPort):
             self.db_session.commit()
         except IntegrityError as e:
             self.db_session.rollback()
-            raise ValueError(f"Erro de integridade ao salvar produto: {e}")
+            
+            raise Exception(f"Erro de integridade ao salvar o produto: {e}")
         
         self.db_session.refresh(db_produto)
         
@@ -104,7 +105,7 @@ class ProdutoRepository(ProdutoRepositoryPort):
             self.db_session.commit()
         except IntegrityError as e:
             self.db_session.rollback()
-            raise ValueError(f"Erro de integridade ao atualizar produto: {e}")
+            raise Exception(f"Erro de integridade ao atualizar o produto: {e}")
         self.db_session.refresh(db_produto)
 
         categoriaProduto: CategoriaProdutoResponseSchema = CategoriaProdutoResponseSchema(id=db_produto.categoria_rel.id, nome=db_produto.categoria_rel.nome)

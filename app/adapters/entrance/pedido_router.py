@@ -1,5 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
-from fastapi import Response
+from fastapi import APIRouter, HTTPException, Depends, Response, status
 from sqlalchemy.orm import Session
 
 from app.infrastructure.db.database import get_db
@@ -21,7 +20,18 @@ def get_pedido_produto_repository(db: Session = Depends(get_db)) -> PedidoProdut
 def get_produto_repository(db: Session = Depends(get_db)) -> ProdutoRepository:
     return ProdutoRepository(db_session=db)
 
-@router.post("/", response_model=PedidoProdutosResponseSchema, status_code=201)
+@router.post("/", response_model=PedidoProdutosResponseSchema, status_code=status.HTTP_201_CREATED, responses={
+    400: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": "Erro de integridade ao salvar o pedido | Erro de integridade ao salvar produtos no pedido"
+                }
+            }
+        }
+    }
+})
 def criar_pedido(
         pedido: PedidoCreateSchema, 
         pedidoRepository: PedidoRepository = Depends(get_pedido_repository), 
@@ -46,17 +56,58 @@ def criar_pedido(
 
         return pedidoResponse
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-@router.get("/", response_model=list[PedidoResponseSchema])
+@router.get("/", response_model=list[PedidoResponseSchema], responses={
+    400: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": ""
+                }
+            }
+        }
+    },
+}, 
+openapi_extra={
+    "responses": {
+        "422": None  
+    }
+})
 def listar_pedidos(repository: PedidoRepository = Depends(get_pedido_repository)):
     try:
 
         return PedidoUseCase(repository).listar_todos()
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-@router.get("/{pedido_id}", response_model=PedidoProdutosResponseSchema)
+@router.get("/{pedido_id}", response_model=PedidoProdutosResponseSchema, responses={
+    404: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": "Pedido não encontrado | Produto(s) do pedido não encontrado(s)"
+                }
+            }
+        }
+    },
+    400: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": ""
+                }
+            }
+        }
+    }
+}, openapi_extra={
+    "responses": {
+        "422": None  
+    }
+})
 def buscar_pedido(
         pedido_id: int, 
         repository: PedidoRepository = Depends(get_pedido_repository), 
@@ -78,25 +129,79 @@ def buscar_pedido(
         )
         
         return pedidoResponse
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
-@router.put("/{pedido_id}", response_model=PedidoResponseSchema)
+@router.put("/{pedido_id}", response_model=PedidoResponseSchema, responses={
+    404: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": "Pedido não encontrado"
+                }
+            }
+        }
+    },
+    400: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": "Pedido já finalizado"
+                }
+            }
+        }
+    }
+})
 def atualizar_pedido(pedido_id: int, pedido: PedidoAtualizaSchema, repository: PedidoRepository = Depends(get_pedido_repository)):
     try:
 
         return PedidoUseCase(repository).atualiza(pedido_id, pedidoRequest=pedido)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     
-@router.delete("/{pedido_id}")
+@router.delete("/{pedido_id}", status_code=status.HTTP_204_NO_CONTENT, responses={
+    404: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": "Pedido não encontrado"
+                }
+            }
+        }
+    },
+    400: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": "Erro de integridade ao deletar o pedido"
+                }
+            }
+        }
+    },
+    204: {
+        "description": "Pedido deletado com sucesso",
+        "content": {
+            "application/json": {
+                "example": {}
+            }
+        }
+    }
+})
 def deletar_pedido(pedido_id: int, repository: PedidoRepository = Depends(get_pedido_repository), repositoryProductOrder: PedidoProdutoRepository = Depends(get_pedido_produto_repository)):
     try:
         PedidoProdutosUseCase(repositoryProductOrder).deletarPorPedido(pedido_id)
         PedidoUseCase(repository).deletar(pedido_id)
 
-        return Response(status_code=204)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

@@ -24,7 +24,7 @@ class ClienteRepository(ClienteRepositoryPort):
         except IntegrityError as e:
             self.db_session.rollback()
             
-            raise ValueError(f"Erro de integridade ao criar cliente: {e}")
+            raise Exception(f"Erro de integridade ao criar cliente: {e}")
         
         self.db_session.refresh(db_cliente)
         response = ClienteResponseSchema.model_validate(db_cliente, from_attributes=True)

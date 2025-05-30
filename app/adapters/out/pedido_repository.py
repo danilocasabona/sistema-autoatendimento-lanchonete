@@ -19,7 +19,7 @@ class PedidoRepository(PedidoRepositoryPort):
         except IntegrityError as e:
             self.db_session.rollback()
             
-            raise ValueError(f"Erro de integridade ao salvar pedido: {e}")
+            raise Exception(f"Erro de integridade ao salvar o pedido: {e}")
         self.db_session.refresh(pedido)
 
         clienteEntity: ClienteResponseSchema = (ClienteResponseSchema(
@@ -105,6 +105,7 @@ class PedidoRepository(PedidoRepositoryPort):
 
     def deletar(self, id: int) -> None:
         db_pedido = self.db_session.query(Pedido).filter(Pedido.pedido_id == id).first()
+        
         if not db_pedido:
             raise ValueError("Pedido não encontrado")
         self.db_session.delete(db_pedido)
@@ -115,7 +116,7 @@ class PedidoRepository(PedidoRepositoryPort):
         db_pedido = self.db_session.query(PedidoORM).filter_by(pedido_id=pedido.pedido_id).first()
 
         if (db_pedido.status == int(StatusPedidoEnum.Finalizado.value)):
-            raise ValueError("Pedido já finalizado")
+            raise Exception("Pedido já finalizado")
         
         if not db_pedido:
             raise ValueError("Pedido não encontrado")

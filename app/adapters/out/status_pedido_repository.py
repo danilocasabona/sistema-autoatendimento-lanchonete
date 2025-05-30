@@ -21,7 +21,7 @@ class StatusPedidoRepository(StatusPedidoRepositoryPort):
         except IntegrityError as e:
             self.db_session.rollback()
             
-            raise ValueError(f"Erro de integridade ao criar cliente: {e}")
+            raise Exception(f"Erro de integridade ao criar o status: {e}")
         
         self.db_session.refresh(db_status)
         response = StatusPedidoResponseSchema.model_validate(db_status, from_attributes=True)
