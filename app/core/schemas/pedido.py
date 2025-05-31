@@ -1,3 +1,8 @@
+from pydantic import BaseModel, EmailStr, constr, ConfigDict
+from app.core.schemas.cliente import *
+from app.core.schemas.produto import *
+from app.core.enums import status_pedido
+from typing import Optional
 import datetime
 from pydantic import BaseModel
 from typing import Optional
@@ -23,6 +28,8 @@ class PedidoResponseSchema(BaseModel):
         allow_population_by_field_name = True
 class PedidoAtualizaSchema(BaseModel):
     status: int
+    
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     
 class PedidoProdutosResponseSchema(BaseModel):
     pedido_id: int

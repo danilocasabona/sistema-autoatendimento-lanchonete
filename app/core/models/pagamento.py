@@ -8,7 +8,7 @@ class Pagamento(Base):
 
     pedido = Column(Integer, ForeignKey("pedido.pedido_id"), primary_key=True, nullable=False)
     codigo_pagamento = Column(String(255), primary_key=True, nullable=False)
-    status = Column(String(100), nullable=True)
+    status = Column(Integer, nullable=True)
 
     pedido_relacionado = relationship("Pedido", backref="pagamentos")
     

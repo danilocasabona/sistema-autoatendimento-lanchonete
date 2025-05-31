@@ -1,13 +1,12 @@
 from pydantic import BaseModel
 
-class PagamentoSchemas(BaseModel):
+class PagamentoCreateSchema(BaseModel):
     pedido_id: int
+    
+class PagamentoResponseSchema(BaseModel):
+    pedido_id: int
+    codigo_pagamento:str
+    status: str
 
-class ResponsePagamentoSchemas(BaseModel):
-    pedido_id: int
-    cliente: int
-    produto_1: int
-    produto_2: int
-    produto_3: int
-    produto_4: int
-    status: int
+class PagamentoAtualizaSchema(BaseModel):
+    status: str
