@@ -30,7 +30,7 @@ class PagamentoUseCase:
         return pagamento_response
     
     def buscar_pagamento_por_codigo(self, codigo_pagamento: str) -> PagamentoResponseSchema:
-        pagamento_consulta: Pagamento = self.pagamento_repository.buscar_pagamento_por_id(codigo_pagamento=codigo_pagamento)
+        pagamento_consulta: Pagamento = self.pagamento_repository.buscar_pagamento_por_codigo(codigo_pagamento=codigo_pagamento)
         pagamento_response: PagamentoResponseSchema = PagamentoResponseSchema(pedido_id=pagamento_consulta.pedido, codigo_pagamento=pagamento_consulta.codigo_pagamento, status=pagamento_consulta.status)
 
         return pagamento_response

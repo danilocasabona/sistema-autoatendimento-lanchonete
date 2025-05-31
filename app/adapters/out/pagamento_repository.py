@@ -18,7 +18,7 @@ class PagamentoRepository(PagamentoRepositoryPort):
         except IntegrityError as e:            
             self.db_session.rollback()
             
-            raise ValueError(f"Erro de integridade ao salvar pagamento: {e}")
+            raise Exception(f"Erro de integridade ao salvar pagamento: {e}")
         self.db_session.refresh(pagamento)
 
         return pagamento
@@ -27,8 +27,8 @@ class PagamentoRepository(PagamentoRepositoryPort):
         
         return self.db_session.query(Pagamento).all()
     
-    def buscar_pagamento_por_id(self, codigo_pagamento: str) -> Optional[Pagamento]: 
-        consulta_pagamento = self.db_session.query(Pagamento).filter_by(codigo_pagamento=codigo_pagamento).first()
+    def buscar_pagamento_por_codigo(self, codigo_pagamento: str) -> Optional[Pagamento]: 
+        consulta_pagamento = self.db_session.query(Pagamento).filter(Pagamento.codigo_pagamento == codigo_pagamento).first()
 
         if not consulta_pagamento:
             raise ValueError("Pagamento não encontrado")
@@ -55,7 +55,7 @@ class PagamentoRepository(PagamentoRepositoryPort):
         return response
     
     def deletar_pagamento(self, codigo_pagamento: str): 
-        pagamento_deletar = self.db_session.query(Pagamento).filter_by(codigo_pagamento=codigo_pagamento).first()
+        pagamento_deletar = self.db_session.query(Pagamento).filter(Pagamento.codigo_pagamento == codigo_pagamento).first()
 
         if not pagamento_deletar:
             raise ValueError("Pagamento não encontrado")

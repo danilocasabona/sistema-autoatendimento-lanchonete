@@ -110,7 +110,7 @@ def buscar_produto(produto_id: int, repository: ProdutoRepository = Depends(get_
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 @router.put("/{produto_id}", response_model=ProdutoResponseSchema, responses={
     404: {
