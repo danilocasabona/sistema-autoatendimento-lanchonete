@@ -1,23 +1,24 @@
-.PHONY: create-folder create-docker run-docker permission-folder stop-docker clean-docker
+.PHONY: create-folder create-docker run-docker run-debug-docker permission-folder stop-docker clean-docker
 
-# subir o projeto
+# criacao da pasta pgdata
 create-folder:
 	mkdir -p data/postgres/pgdata
 
+permission-folder:
+	sudo chmod 777 data/postgres/pgdata -R
+
+# subir o projeto
 create-clear-docker:
 	docker compose build --no-cache
 
 create-docker:
 	docker compose build
 
-run-debug-docker:
+run-docker:
 	docker compose up -d
 
-run-docker:
+run-debug-docker:
 	docker compose up
-
-permission-folder:
-	sudo chmod 777 data/postgres/pgdata -R
 
 # parar o projeto
 stop-clear-docker:
