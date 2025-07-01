@@ -4,12 +4,12 @@ from app.infrastructure.api.fastapi import app, Depends
 #from sqlalchemy.orm import Session
 
 # import
-from app.adapters.entrance import check_router
-from app.adapters.entrance import cliente_router
-from app.adapters.entrance import pagamento_router
-from app.adapters.entrance import pedido_router
-from app.adapters.entrance import produto_router
-from app.adapters.entrance import status_pedido_router
+from app.api import check_router
+from app.api import cliente_router
+from app.api import pagamento_router
+from app.api import pedido_router
+from app.api import produto_router
+from app.api import status_pedido_router
 
 # declare
 app.include_router(check_router.router)
