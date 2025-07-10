@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from app.core.domain.pedido.ports import PedidoRepositoryPort, Pedido
 from app.core.models.pedido import Pedido as PedidoORM
 from app.core.enums.status_pedido import StatusPedidoEnum
-from app.core.schemas.cliente import ClienteResponseSchema
+from app.schemas.cliente import ClienteResponseSchema
 from app.core.schemas.pedido import PedidoResponseSchema
 from app.core.schemas.status_pedido import StatusPedidoResponseSchema
 

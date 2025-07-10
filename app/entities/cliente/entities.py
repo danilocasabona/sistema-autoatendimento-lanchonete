@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from app.core.domain.cliente.models import Cliente
+from app.entities.cliente.models import Cliente
 
-class ClienteRepositoryPort(ABC):
+class ClienteEntities(ABC):
     @abstractmethod
-    def criarCliente(self, cliente: Cliente) -> Cliente:
+    def criar_cliente(self, cliente: Cliente) -> Cliente:
         pass
 
     @abstractmethod

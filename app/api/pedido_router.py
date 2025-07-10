@@ -2,9 +2,9 @@ from fastapi import APIRouter, HTTPException, Depends, Response, status
 from sqlalchemy.orm import Session
 
 from app.infrastructure.db.database import get_db
-from app.adapters.out.pedido_repository import PedidoRepository
-from app.adapters.out.pedido_produto_repository import PedidoProdutoRepository
-from app.adapters.out.produto_repository import ProdutoRepository
+from app.gateways.pedido_repository import PedidoRepository
+from app.gateways.pedido_produto_repository import PedidoProdutoRepository
+from app.gateways.produto_repository import ProdutoGateway
 from app.core.use_cases.pedido.pedido_use_case import PedidoUseCase
 from app.core.use_cases.pedido_produtos.pedido_produtos_use_case import PedidoProdutosUseCase
 from app.core.schemas.pedido import PedidoCreateSchema, PedidoResponseSchema, PedidoAtualizaSchema, PedidoProdutosResponseSchema
@@ -17,8 +17,8 @@ def get_pedido_repository(db: Session = Depends(get_db)) -> PedidoRepository:
 def get_pedido_produto_repository(db: Session = Depends(get_db)) -> PedidoProdutoRepository:
     return PedidoProdutoRepository(db_session=db)
 
-def get_produto_repository(db: Session = Depends(get_db)) -> ProdutoRepository:
-    return ProdutoRepository(db_session=db)
+def get_produto_repository(db: Session = Depends(get_db)) -> ProdutoGateway:
+    return ProdutoGateway(db_session=db)
 
 @router.post("/", response_model=PedidoProdutosResponseSchema, status_code=status.HTTP_201_CREATED, responses={
     400: {
@@ -36,7 +36,7 @@ def criar_pedido(
         pedido: PedidoCreateSchema, 
         pedidoRepository: PedidoRepository = Depends(get_pedido_repository), 
         pedidoProdutosRepository: PedidoProdutoRepository = Depends(get_pedido_produto_repository), 
-        produtoRepository: ProdutoRepository = Depends(get_produto_repository)
+        produtoRepository: ProdutoGateway = Depends(get_produto_repository)
     ):
     try:
         orderUseCase = PedidoUseCase(pedidoRepository).criarPedido(pedidoRequest=pedido)
@@ -112,7 +112,7 @@ def buscar_pedido(
         pedido_id: int, 
         repository: PedidoRepository = Depends(get_pedido_repository), 
         pedidoProdutosRepository: PedidoProdutoRepository = Depends(get_pedido_produto_repository),
-        produtoRepository: ProdutoRepository = Depends(get_produto_repository)
+        produtoRepository: ProdutoGateway = Depends(get_produto_repository)
     ):
     try:
         orderUseCase = PedidoUseCase(repository).buscar_por_id(pedido_id)

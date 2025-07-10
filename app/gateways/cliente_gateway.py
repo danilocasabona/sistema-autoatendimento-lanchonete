@@ -2,16 +2,16 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
-from app.core.domain.cliente.models import Cliente
-from app.core.domain.cliente.ports import ClienteRepositoryPort
-from app.core.models.cliente import Cliente as ClienteORM
-from app.core.schemas.cliente import ClienteResponseSchema
+from app.entities.cliente.models import Cliente
+from app.entities.cliente.entities import ClienteEntities
+from app.models.cliente import Cliente as ClienteORM
+from app.schemas.cliente import ClienteResponseSchema
 
-class ClienteRepository(ClienteRepositoryPort):
+class ClienteGateway(ClienteEntities):
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def criarCliente(self, cliente: Cliente) -> Cliente:
+    def criar_cliente(self, cliente: Cliente) -> Cliente:
         try:
             db_cliente = ClienteORM(
                 nome=cliente.nome,

@@ -10,7 +10,7 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from app.infrastructure.db.database import Base
-from app.adapters.db.database import engine
+from app.infrastructure.db.database import engine
 from app.core import models
 # from app.core.models import produto
 

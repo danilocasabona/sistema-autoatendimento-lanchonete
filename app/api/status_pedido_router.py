@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Response, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from app.adapters.out.status_pedido_repository import StatusPedidoRepository
+from app.gateways.status_pedido_repository import StatusPedidoRepository
 from app.infrastructure.db.database import get_db
 from app.core.schemas.status_pedido import StatusPedidoCreateSchema, StatusPedidoResponseSchema, StatusPedidoUpdateSchema
 from app.core.use_cases.status.status_pedido_use_case import StatusPedidoUseCase

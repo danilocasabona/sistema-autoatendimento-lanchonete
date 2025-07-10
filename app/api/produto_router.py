@@ -1,15 +1,15 @@
 from fastapi import APIRouter, HTTPException, Depends, Response, status
 from sqlalchemy.orm import Session
 
-from app.adapters.out.produto_repository import ProdutoRepository
+from app.gateways.produto_repository import ProdutoGateway
 from app.core.use_cases.produto.produto_use_case import ProdutoUseCase
 from app.core.schemas.produto import ProdutoCreateSchema, ProdutoResponseSchema, ProdutoUpdateSchema
 from app.infrastructure.db.database import get_db
 
 router = APIRouter(prefix="/produtos", tags=["produtos"])
 
-def get_produto_repository(db: Session = Depends(get_db)) -> ProdutoRepository:
-    return ProdutoRepository(db_session=db)
+def get_produto_repository(db: Session = Depends(get_db)) -> ProdutoGateway:
+    return ProdutoGateway(db_session=db)
 
 @router.post("/", response_model=ProdutoResponseSchema, status_code=status.HTTP_201_CREATED, responses={
     400: {
@@ -23,7 +23,7 @@ def get_produto_repository(db: Session = Depends(get_db)) -> ProdutoRepository:
         }
     }
 })
-def criar_produto(produto: ProdutoCreateSchema, repository: ProdutoRepository = Depends(get_produto_repository)):
+def criar_produto(produto: ProdutoCreateSchema, repository: ProdutoGateway = Depends(get_produto_repository)):
     try:
         produto_criado = ProdutoUseCase(repository).criar_produto(**produto.model_dump())
 
@@ -47,7 +47,7 @@ def criar_produto(produto: ProdutoCreateSchema, repository: ProdutoRepository = 
         "422": None  
     }
 })
-def listar_produtos(repository: ProdutoRepository = Depends(get_produto_repository)):
+def listar_produtos(repository: ProdutoGateway = Depends(get_produto_repository)):
     try:
 
         return ProdutoUseCase(repository).listar_todos()
@@ -70,7 +70,7 @@ def listar_produtos(repository: ProdutoRepository = Depends(get_produto_reposito
         "422": None  
     }
 })
-def listar_produtos_por_categoria(categoria: int, repository: ProdutoRepository = Depends(get_produto_repository)):
+def listar_produtos_por_categoria(categoria: int, repository: ProdutoGateway = Depends(get_produto_repository)):
     try:
 
         return ProdutoUseCase(repository).listar_por_categoria(categoria)
@@ -103,7 +103,7 @@ def listar_produtos_por_categoria(categoria: int, repository: ProdutoRepository 
         "422": None  
     }
 })
-def buscar_produto(produto_id: int, repository: ProdutoRepository = Depends(get_produto_repository)):
+def buscar_produto(produto_id: int, repository: ProdutoGateway = Depends(get_produto_repository)):
     try:
 
         return ProdutoUseCase(repository).buscar_por_id(produto_id)
@@ -134,7 +134,7 @@ def buscar_produto(produto_id: int, repository: ProdutoRepository = Depends(get_
         }
     }
 })
-def atualizar_produto(produto_id: int, produto: ProdutoUpdateSchema, repository: ProdutoRepository = Depends(get_produto_repository)):
+def atualizar_produto(produto_id: int, produto: ProdutoUpdateSchema, repository: ProdutoGateway = Depends(get_produto_repository)):
     try:
 
         return ProdutoUseCase(repository).atualizar_produto(produto_id, produto_data=produto)
@@ -173,7 +173,7 @@ def atualizar_produto(produto_id: int, produto: ProdutoUpdateSchema, repository:
         }
     }
 })
-def deletar_produto(produto_id: int, repository: ProdutoRepository = Depends(get_produto_repository)):
+def deletar_produto(produto_id: int, repository: ProdutoGateway = Depends(get_produto_repository)):
     try:
         ProdutoUseCase(repository).deletar_produto(produto_id)
 

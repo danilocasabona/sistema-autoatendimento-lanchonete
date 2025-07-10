@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, constr, ConfigDict
-from app.core.schemas.cliente import *
+from app.schemas.cliente import *
 from app.core.schemas.produto import *
 from app.core.enums import status_pedido
 from typing import Optional
@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from typing import Optional
 from typing import List
 
-from app.core.schemas.cliente import ClienteResponseSchema
+from app.schemas.cliente import ClienteResponseSchema
 from app.core.schemas.produto import ProdutoResponseSchema
 from app.core.schemas.status_pedido import StatusPedidoResponseSchema
 
