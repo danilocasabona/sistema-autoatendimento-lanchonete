@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Response, status
 from sqlalchemy.orm import Session
 
-from app.adapters.out.pagamento_repository import PagamentoRepository
+from app.gateways.pagamento_repository import PagamentoRepository
 from app.core.use_cases.pagamento.pagamento_use_case import PagamentoUseCase
 from app.core.schemas.pagamento import *
 from app.infrastructure.db.database import get_db

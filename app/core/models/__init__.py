@@ -1,5 +1,5 @@
 from .produto import Produto
-from .cliente import Cliente
+from ...models.cliente import Cliente
 from .status_pedido import StatusPedido
 from .categoria_produto import CategoriaProduto
 from .pedido import Pedido
