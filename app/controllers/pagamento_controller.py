@@ -41,7 +41,6 @@ class PagamentoController:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
         
     def deletar_pagamento(self, codigo_pagamento: int):
-        """ excluir cliente """
         
         try:
             return PagamentoUseCase(self.db_session).deletar_pagamento(codigo_pagamento=codigo_pagamento)
