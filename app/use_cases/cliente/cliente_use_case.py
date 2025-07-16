@@ -1,6 +1,6 @@
 from app.entities.cliente.entities import ClienteEntities
 from app.entities.cliente.models import Cliente
-from app.schemas.cliente import ClienteCreateSchema, ClienteResponseSchema, ClienteUpdateSchema
+from app.adapters.schemas.cliente import ClienteCreateSchema, ClienteResponseSchema, ClienteUpdateSchema
 
 class ClienteUseCase:
     def __init__(self, entities: ClienteEntities):

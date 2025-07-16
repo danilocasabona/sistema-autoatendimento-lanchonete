@@ -4,7 +4,7 @@ from typing import List
 
 from app.gateways.cliente_gateway import ClienteGateway
 from app.infrastructure.db.database import get_db
-from app.schemas.cliente import ClienteCreateSchema, ClienteResponseSchema, ClienteUpdateSchema
+from app.adapters.schemas.cliente import ClienteCreateSchema, ClienteResponseSchema, ClienteUpdateSchema
 from app.controllers.cliente_controller import ClienteController
 
 router = APIRouter(prefix="/clientes", tags=["clientes"])

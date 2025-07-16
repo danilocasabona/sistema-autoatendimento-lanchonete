@@ -11,7 +11,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from app.infrastructure.db.database import Base
 from app.infrastructure.db.database import engine
-from app.core import models
+from app.models import *
 # from app.core.models import produto
 
 # this is the Alembic Config object, which provides

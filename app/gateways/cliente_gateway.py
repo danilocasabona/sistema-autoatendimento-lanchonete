@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from app.entities.cliente.models import Cliente
 from app.entities.cliente.entities import ClienteEntities
 from app.models.cliente import Cliente as ClienteORM
-from app.schemas.cliente import ClienteResponseSchema
+from app.adapters.schemas.cliente import ClienteResponseSchema
 
 class ClienteGateway(ClienteEntities):
     def __init__(self, db_session: Session):
