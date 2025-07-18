@@ -1,0 +1,26 @@
+apiVersion: apps/v1                      # tipo de recurso + versão da API
+kind: Deployment
+metadata:
+  name: lanchonete-db-deployment
+spec:
+  replicas: 1                         #  numero de instâncias (pods) do app
+  selector:
+    matchLabels:
+      app: lanchonete_db
+  template:
+    metadata:
+      labels:
+        app: lanchonete_db
+    spec:
+      containers:
+      - name: lanchonete-db-container
+        image: 822619186337.dkr.ecr.us-east-1.amazonaws.com/lanchonete-db:latest          #    URI do ECR
+        ports:
+        - containerPort: 5432     #   Porta do PostgreSQL
+        volumeMounts:                   #     Para persistir os dados do banco de dados
+          - name: pgdata-volume
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata-volume
+          persistentVolumeClaim:
+            claimName: lanchonete-db-pvc         #    Nome do PersistentVolumeClaim

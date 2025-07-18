@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lanchonete-app-deployment
+spec: 
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: lanchonete_app
+  template:
+    metadata:
+      labels:
+        app: lanchonete_app
+    spec:
+      containers:
+      - name: lanchonete-app-container
+        image: 822619186337.dkr.ecr.us-east-1.amazonaws.com/lanchonete-app:latest #  URI do ECR
+        ports:
+        - containerPort: 8000
+        command: ["uvicorn", "app.main:app ", "--host",  "0.0.0.0", "--port", "8000", "--reload"]
+        env:
+          - name: APP_PORT
+            value: "8000"

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lanchonete-app-service
+spec:
+  selector:
+    app: lanchonete_app    
+  ports:
+    - protocol: TCP
+      port: 80              # Porta do ELB
+      targetPort: 8000      # Porta que o container lanchonete-app-container escuta
+  type: LoadBalancer
