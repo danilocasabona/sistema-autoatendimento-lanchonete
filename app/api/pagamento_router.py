@@ -1,38 +1,16 @@
 from fastapi import APIRouter, HTTPException, Depends, Response, status
 from sqlalchemy.orm import Session
 
-from app.gateways.pagamento_repository import PagamentoRepository
-from app.core.use_cases.pagamento.pagamento_use_case import PagamentoUseCase
-from app.core.schemas.pagamento import *
+from app.gateways.pagamento_gateway import PagamentoGateway
 from app.infrastructure.db.database import get_db
+from app.schemas.pagamento import PagamentoCreateSchema, PagamentoResponseSchema, PagamentoAtualizaSchema
+from app.controllers.pagamento_controller import PagamentoController
 
 router = APIRouter(prefix="/pagamento", tags=["pagamento"])
 
-def get_pagamento_repository(db: Session = Depends(get_db)) -> PagamentoRepository:
-    return PagamentoRepository(db_session=db)
-
-@router.get("/", response_model=list[PagamentoResponseSchema], summary="Listar todos os pagamentos realizado", responses={
-    400: {
-        "description": "Erro de validação",
-        "content": {
-            "application/json": {
-                "example": {
-                    "message": "Erro de integridade ao buscar os pagamentos"
-                }
-            }
-        }
-    }
-}, openapi_extra={
-    "responses": {
-        "422": None  
-    }
-})
-def listar_pagamentos(repository: PagamentoRepository = Depends(get_pagamento_repository)):
-    try:
-        
-        return PagamentoUseCase(repository).listar_todos_pagamentos()
-    except Exception as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+def get_pagamento_gateway(db: Session = Depends(get_db)) -> PagamentoGateway:
+    
+    return PagamentoGateway(db_session=db)
 
 @router.post("/", response_model=PagamentoResponseSchema, status_code=status.HTTP_201_CREATED, summary="Criar pagamento do pedido", responses={
     400: {
@@ -46,10 +24,10 @@ def listar_pagamentos(repository: PagamentoRepository = Depends(get_pagamento_re
         }
     }
 })
-def efetuar_pagamento_pedido(pedido_id: PagamentoCreateSchema, repository: PagamentoRepository = Depends(get_pagamento_repository)):
+def efetuar_pagamento_pedido(pedido_id: PagamentoCreateSchema, gateway: PagamentoGateway = Depends(get_pagamento_gateway)):
     try:
         
-        return PagamentoUseCase(repository).criar_pagamento(pedido_pagamento=pedido_id)
+        return PagamentoController().criar_pagamento(pedido_id, gateway)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
@@ -79,12 +57,35 @@ def efetuar_pagamento_pedido(pedido_id: PagamentoCreateSchema, repository: Pagam
         "422": None  
     }
 })
-def buscar_pagamento(codigo_pagamento: str, repository: PagamentoRepository = Depends(get_pagamento_repository)):
+def buscar_pagamento(codigo_pagamento: str, gateway: PagamentoGateway = Depends(get_pagamento_gateway)):
     try:
         
-        return PagamentoUseCase(repository).buscar_pagamento_por_codigo(codigo_pagamento=codigo_pagamento)
+        return PagamentoController().buscar_pagamento_por_codigo(codigo_pagamento, gateway)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+@router.get("/", response_model=list[PagamentoResponseSchema], summary="Listar todos os pagamentos realizado", responses={
+    400: {
+        "description": "Erro de validação",
+        "content": {
+            "application/json": {
+                "example": {
+                    "message": "Erro de integridade ao buscar os pagamentos"
+                }
+            }
+        }
+    }
+}, openapi_extra={
+    "responses": {
+        "422": None  
+    }
+})
+def listar_pagamentos(gateway: PagamentoGateway = Depends(get_pagamento_gateway)):
+    try:
+        
+        return PagamentoController().listar_pagamentos(gateway)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
@@ -110,10 +111,10 @@ def buscar_pagamento(codigo_pagamento: str, repository: PagamentoRepository = De
         }
     }
 })
-def atualizar_pagamento(codigo_pagamento: str, pagamento_data: PagamentoAtualizaSchema, repository: PagamentoRepository = Depends(get_pagamento_repository)):
+def atualizar_pagamento(codigo_pagamento: str, pagamento_data: PagamentoAtualizaSchema, gateway: PagamentoGateway = Depends(get_pagamento_gateway)):
     try:
         
-        return PagamentoUseCase(repository).atualizar_pagamento(codigo=codigo_pagamento, pagamento_request=pagamento_data)
+        return PagamentoController().atualizar_pagamento(codigo_pagamento, pagamento_data, gateway)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
@@ -149,9 +150,9 @@ def atualizar_pagamento(codigo_pagamento: str, pagamento_data: PagamentoAtualiza
         }
     }
 })
-def deletar_pagamento(codigo_pagamento: str, repository: PagamentoRepository = Depends(get_pagamento_repository)):
+def deletar_pagamento(codigo_pagamento: str, gateway: PagamentoGateway = Depends(get_pagamento_gateway)):
     try:
-        PagamentoUseCase(repository).deletar_pagamento(codigo_pagamento=codigo_pagamento)
+        PagamentoController().deletar_pagamento(codigo_pagamento, gateway)
         
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     except ValueError as e:

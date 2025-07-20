@@ -11,5 +11,3 @@ class Pagamento(Base):
     status = Column(Integer, nullable=True)
 
     pedido_relacionado = relationship("Pedido", backref="pagamentos")
-    
-    
