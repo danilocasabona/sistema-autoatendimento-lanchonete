@@ -9,7 +9,7 @@ from app.core.schemas.produto import ProdutoResponseSchema
 from app.core.schemas.categoria_produto import CategoriaProdutoResponseSchema
 from app.core.models.produto import Produto
 
-class ProdutoRepository(ProdutoRepositoryPort):
+class ProdutoGateway(ProdutoRepositoryPort):
     def __init__(self, db_session):
         self.db_session = db_session
 
