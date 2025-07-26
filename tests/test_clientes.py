@@ -1,7 +1,7 @@
 import pytest
 from app.infrastructure.db.database import SessionLocal
-from app.core.models.cliente import Cliente as ClienteORM
-from app.core.models.produto import Produto as ProdutoORM
+from app.models.cliente import Cliente as ClienteORM
+from app.models.produto import Produto as ProdutoORM
 from fastapi.testclient import TestClient
 from app.main import app
 import uuid
