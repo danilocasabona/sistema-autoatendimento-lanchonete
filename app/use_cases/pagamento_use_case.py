@@ -39,7 +39,7 @@ class PagamentoUseCase:
         return response
     
     def atualizar_pagamento(self, codigo: str, pagamento_request: PagamentoAtualizaSchema) -> PagamentoResponseSchema: 
-        pagamento: PagamentoModel = self.buscarPorCodigo(codigoPagamento=codigo)
+        pagamento: PagamentoModel = self.buscar_por_codigo(codigoPagamento=codigo)
         
         if not pagamento:
             raise ValueError("Pagamento não encontrado")
