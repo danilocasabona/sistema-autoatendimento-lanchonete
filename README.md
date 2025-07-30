@@ -4,16 +4,31 @@ Bem-vindo ao repositório oficial do projeto de autoatendimento para lanchonete!
 
 Este projeto faz parte do Tech Challenge da pós-graduação em Arquitetura de Sistemas (FIAP) e aplica os conceitos de arquitetura hexagonal, modularização, testabilidade com BDD e documentação viva com FastAPI.
 
+---
+
+## ⚙️ Pré-requisitos
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) **com Kubernetes ativado** (recomendado) ou [Minikube](https://minikube.sigs.k8s.io/docs/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Git](https://git-scm.com/)
+- [k6](https://k6.io/) (opcional, para testes de carga: `brew install k6` no Mac)
+
+---
+
 ## 📂 Estrutura do Projeto
 
 ```
 project_root/
-├── .docker/           # Concentra os arquivos de configuração do container
+├── .docker/           # Configuração dos containers
 ├── app/               # Código principal da aplicação
+├── k8s/               # Manifestos Kubernetes (Deployment, Service, HPA, ConfigMap, Secret, test.js)
 ├── tests/             # Testes unitários, integração e BDD
 ├── docs/              # Documentação técnica do projeto
+├── setup.sh           # Script automatizado para setup local com Kubernetes
 └── README.md          # Este arquivo
 ```
+
+---
 
 ## 🧭 Fluxo do Projeto
 
@@ -24,75 +39,129 @@ project_root/
 5. Registro do pedido e atualização de status
 6. Monitoramento e health-check da aplicação
 
-## 🧩 Documentação Técnica
+---
 
-- [🗺️ Mapa de Entidades](docs/arquitetura/mapa-de-entidades.md)
-- [📚 Estudos e Referências](docs/estudo/)
-- [🖼️ Imagens e Diagramas](docs/imagens/)
+## 📐 Desenho da Arquitetura
 
-## 🧠 Mapa Mental do Projeto
+- **Kubernetes**: Orquestração dos containers (testado localmente com Docker Desktop + Kubernetes, mas compatível com Minikube, Kind, EKS, AKS, GKE, etc.)
+- **HPA**: Escalabilidade automática dos pods conforme demanda
+- **ConfigMap/Secret**: Boas práticas de segurança para variáveis sensíveis
+- **Deployment/Service**: Exposição e gerenciamento dos pods
+- **Banco de Dados**: PostgreSQL rodando em container separado
 
-![Mapa Mental](/docs/imagens/mapa_mental_arquitetura_lanchonete.jpeg)
+> *(Adicione um diagrama da arquitetura em docs/imagens/ se desejar)*
 
-## 🚀 Tecnologias e Conceitos Aplicados
+---
 
-- Python 3.x
-- FastAPI
-- Arquitetura Hexagonal (Ports and Adapters)
-- Testes unitários e BDD com pytest-bdd
-- Docker e Docker Compose
-- Documentação viva via Swagger / OpenAPI
-- Modularização de código e separação de responsabilidades
+## 🔗 APIs e Documentação
 
-## 📦 Como iniciar o projeto
+- **Swagger/OpenAPI:**  
+  Acesse a documentação interativa em: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-1. Clone o repositório
+- **Collection Postman:**  
+  [Download da Collection](docs/collection/lanchonete.postman_collection.json)  
+  *(Adicione o arquivo JSON da collection do Postman na pasta docs/collection)*
 
-```bash
-git clone <url-do-repositorio>
-cd project_root
-```
+---
 
-2. Execute o docker do projeto
+## ▶️ Guia Completo de Execução
 
-2.1 Acesse a pasta do docker
-```bash
-cd .docker
-```
-2.1 Necessário criar uma pasta onde vai ser armazenado os dados oriundos do banco, gerenciado pelo nosso container.
- > Utilizamos o arquivo Makefile para isso.
+### 1. Clone o repositório
 
 ```bash
-make create-folder
+git clone https://github.com/danilocasabona/sistema-autoatendimento-lanchonete
+cd sistema-autoatendimento-lanchonete
 ```
-Precisamos dar a permissão para escrever na pasta do banco de dados:
+
+### 2. Execute o script de setup Kubernetes
 
 ```bash
-make permission-folder
+chmod +x setup.sh
+./setup.sh
 ```
 
-2.2 Crie os containers da aplicação:
+O script irá:
+- Aplicar todos os manifestos Kubernetes (pasta `k8s/`)
+- Esperar os pods ficarem prontos
+- Fazer port-forward para http://localhost:8000
+- Testar automaticamente o endpoint principal e o Swagger
+
+### 3. Teste de carga com k6
+
+Já existe um arquivo de teste em `k8s/test.js`. Para rodar um teste de carga real e acionar o autoscaling, utilize o comando abaixo (por exemplo, com 20 usuários virtuais por 2 minutos):
 
 ```bash
-make create-docker
+k6 run --vus 20 --duration 2m k8s/test.js
 ```
 
-Ao finalizar a criação do docker, vamos subir os containers:
+Acompanhe o autoscaling:
+
 ```bash
-make run-docker
+kubectl get hpa -w
+kubectl get pods -w
 ```
 
-Acesse a documentação automática da API em: `http://localhost:8000/docs`
+### 4. Acesse a documentação da API
 
-## ✅ Progresso do Projeto
+Acesse [http://localhost:8000/docs](http://localhost:8000/docs) para ver o Swagger.
 
-- [x] Estrutura inicial do projeto
-- [x] Guia de estudos personalizado
-- [x] Mapeamento dos conceitos
-- [x] Mapa mental do projeto
-- [X] Desenvolvimento das funcionalidades principais
-- [] Implementação dos testes BDD e unitários
-- [X] Finalização e entrega do Tech Challenge
+> Para interromper o port-forward, use o comando exibido ao final do script (`kill <PID>`).
+
+---
+
+## 🗂️ Ordem de Execução das APIs
+
+1. **Consultar cardápio:** `GET /cardapio`
+2. **Criar pedido:** `POST /pedidos`
+3. **Adicionar itens:** `POST /pedidos/{id}/itens`
+4. **Realizar pagamento:** `POST /pagamentos`
+5. **Consultar status:** `GET /pedidos/{id}`
+
+*(Consulte exemplos reais no Swagger ou na Collection do Postman)*
+
+---
+
+## 🔒 Segurança e Boas Práticas
+
+- Variáveis sensíveis estão em arquivos Secret (não versionar em produção)
+- ConfigMap para configs não sensíveis
+- HPA configurado para escalabilidade automática
+- Deployments e Services para todos os componentes
+
+---
+
+## ✅ Checklist de Entrega
+
+- [x] Manifestos Kubernetes (Deployment, Service, HPA, ConfigMap, Secret) no repositório
+- [x] Documentação da arquitetura e infraestrutura
+- [x] Collection Postman ou link do Swagger
+- [x] Guia completo de execução
+- [x] Boas práticas de segurança e arquitetura
+
+---
+
+## ℹ️ Observação importante sobre o metrics-server
+
+Para que o autoscaling (HPA) funcione corretamente, é necessário que o **metrics-server** esteja instalado e rodando no cluster Kubernetes.
+
+- **Docker Desktop:** normalmente já vem com o metrics-server instalado, mas pode ser necessário ativar.
+- **Minikube:** execute `minikube addons enable metrics-server` antes de rodar o setup.
+- **Outros clusters:** instale com:
+  ```bash
+  kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+  ```
+
+O script `setup.sh` já verifica e instala automaticamente o metrics-server caso não esteja presente.  
+**Além disso, o script também aplica automaticamente a configuração `--kubelet-insecure-tls` no metrics-server, necessária para clusters locais (Docker Desktop, Minikube), garantindo que o HPA funcione corretamente sem necessidade de ajustes manuais.**
+
+Se o HPA não mostrar métricas, aguarde alguns minutos após o deploy ou confira se o metrics-server está rodando com:
+
+```bash
+kubectl get deployment metrics-server -n kube-system
+```
+E, se necessário, consulte os logs do metrics-server para identificar possíveis problemas
+
+---
 
 ## 📝 Contribuição
 
