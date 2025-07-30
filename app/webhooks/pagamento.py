@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Response, status, FastAPI
+from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 
 from app.gateways.pagamento_gateway import PagamentoGateway
