@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+data:
+  POSTGRES_DB: lanchonete            #     Nome da base
+  POSTGRES_USER: postgre             #     Nome do usuario

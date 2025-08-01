@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lanchonete_db
+  template:
+    metadata:
+      labels:
+        app: lanchonete_db
+    spec:
+      containers:
+      - name: lanchonete-db-container
+        image: lanchonete_db:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: POSTGRES_DB
+        volumeMounts:
+          - name: pgdata-volume
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata-volume
+          persistentVolumeClaim:
+            claimName: db-pvc
