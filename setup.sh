@@ -1,5 +1,39 @@
 #!/bin/bash
 
+# Verifica se está rodando no macOS
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # Verifica se o Homebrew está instalado
+  if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew não está instalado. Instalando Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    export PATH="/opt/homebrew/bin:$PATH"
+  fi
+fi
+
+# Verifica se o Minikube está instalado, se não estiver, instala automaticamente
+if ! command -v minikube >/dev/null 2>&1; then
+  echo "Minikube não está instalado. Instalando automaticamente..."
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install minikube
+  elif [[ "$OSTYPE" == "linux"* ]]; then
+    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+    sudo install minikube-linux-amd64 /usr/local/bin/minikube
+    rm minikube-linux-amd64
+  else
+    echo "Sistema operacional não suportado para instalação automática. Instale o Minikube manualmente: https://minikube.sigs.k8s.io/docs/start/"
+    exit 1
+  fi
+fi
+
+# Verifica se o Minikube está rodando
+if ! minikube status | grep -q "host: Running"; then
+  echo "Minikube não está rodando. Iniciando Minikube..."
+  minikube start
+fi
+
+echo "Dica: Para usar imagens locais, execute antes:"
+echo "eval \$(minikube docker-env)"
+
 echo "Verificando se o metrics-server está instalado..."
 if ! kubectl get deployment metrics-server -n kube-system >/dev/null 2>&1; then
   echo "Instalando metrics-server..."
@@ -24,6 +58,15 @@ kubectl apply -f k8s/
 
 echo "Aguardando pods da aplicação subirem..."
 kubectl wait --for=condition=ready pod -l app=lanchonete-app --timeout=120s
+
+# Verifica se a porta 8000 está em uso e libera se necessário
+PORT=8000
+PID=$(lsof -ti tcp:$PORT)
+if [ -n "$PID" ]; then
+  echo "A porta $PORT está em uso pelo processo $PID. Matando o processo..."
+  kill -9 $PID
+  sleep 1
+fi
 
 echo "Fazendo port-forward para http://localhost:8000 ..."
 kubectl port-forward service/lanchonete-app-service 8000:80 &
