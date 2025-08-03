@@ -75,7 +75,11 @@ class PedidoGateway(PedidoEntities):
         return pedidoResponse
 
     def listar_todos(self) -> list[PedidoResponseSchema]:
-        db_pedidos = self.db_session.query(Pedido).all()
+        pedidos_prontos = self.db_session.query(Pedido).filter(Pedido.status == 3).order_by(Pedido.data_criacao.asc()).all()
+        pedidos_em_preparacao = self.db_session.query(Pedido).filter(Pedido.status == 2).order_by(Pedido.data_criacao.asc()).all()
+        pedidos_recebidos = self.db_session.query(Pedido).filter(Pedido.status == 1).order_by(Pedido.data_criacao.asc()).all()
+        db_pedidos = pedidos_prontos + pedidos_em_preparacao + pedidos_recebidos
+
         pedidos = []
 
         for pedido in db_pedidos:
