@@ -163,11 +163,12 @@ Inclua a saída desses comandos (ou prints) na entrega, mostrando que os pods es
 
 ## 🗂️ Ordem de Execução das APIs
 
-1. **Consultar cardápio:** `GET /cardapio`
-2. **Criar pedido:** `POST /pedidos`
-3. **Adicionar itens:** `POST /pedidos/{id}/itens`
-4. **Realizar pagamento:** `POST /pagamentos`
-5. **Consultar status:** `GET /pedidos/{id}`
+1. **Consultar cardápio:** `GET /produtos`
+2. **Cadastro de clientes:** `POST /clientes`
+3. **Criar pedido:** `POST /pedidos`
+4. **Realizar pagamento manualmente:** `POST /pagamento`
+5. **Consultar status do pedido:** `GET /pedidos/{id}`
+6. **Realizar pagamento via webhook:** `POST /webhook/update-payment`
 
 *(Consulte exemplos reais no Swagger ou na Collection do Postman)*
 
