@@ -62,7 +62,17 @@ project_root/
 - **Deployment/Service**: Exposição e gerenciamento dos pods
 - **Banco de Dados**: PostgreSQL rodando em container separado
 
-> *(Adicione um diagrama da arquitetura em docs/imagens/ se desejar)*
+> ---
+
+## 📚 Documentação de Arquitetura
+
+A documentação detalhada da arquitetura Clean Architecture do projeto está disponível em:
+
+- [`docs/arquiteturas/Clean-Architecture/clean-architecture.md`](docs/arquiteturas/Clean-Architecture/clean-architecture.md)
+
+### Diagrama Clean Architecture
+
+![Clean Architecture](docs/arquiteturas/Clean-Architecture/clean-architecture.png)
 
 ---
 
@@ -156,8 +166,6 @@ Esse script mostra:
 - Pods ativos no cluster
 - Contexto atual do kubectl
 - IP do Minikube
-
-Inclua a saída desses comandos (ou prints) na entrega, mostrando que os pods estão rodando no cluster Minikube.
 
 ---
 
