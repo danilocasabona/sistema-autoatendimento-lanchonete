@@ -72,7 +72,7 @@ A documentação detalhada da arquitetura Clean Architecture do projeto está di
 
 ### Diagrama Clean Architecture
 
-![Clean Architecture](docs/arquiteturas/Clean-Architecture/clean-architecture.png)
+![Clean Architecture](docs/arquiteturas/Clean-Architecture/Clean-Architecture.png)
 
 ---
 
