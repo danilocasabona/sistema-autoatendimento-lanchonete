@@ -8,6 +8,7 @@ Este projeto faz parte do Tech Challenge da pós-graduação em Arquitetura de S
 
 ## ⚙️ Pré-requisitos
 
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (precisa estar em execução no Mac)
 - [Minikube](https://minikube.sigs.k8s.io/docs/) (recomendado para cluster local)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - [Git](https://git-scm.com/)
@@ -177,6 +178,7 @@ Esse script mostra:
 4. **Realizar pagamento manualmente:** `POST /pagamento`
 5. **Consultar status do pedido:** `GET /pedidos/{id}`
 6. **Realizar pagamento via webhook:** `POST /webhook/update-payment`
+7. **Atualizar manualmente status do pedido:** `PUT /pedidos/{id}`
 
 *(Consulte exemplos reais no Swagger ou na Collection do Postman)*
 
