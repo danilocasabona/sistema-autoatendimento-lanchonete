@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.gateways.pagamento_gateway import PagamentoGateway
 from app.infrastructure.db.database import get_db
 from app.adapters.schemas.pagamento import PagamentoAtualizaWebhookSchema, PagamentoResponseSchema
-from app.controllers.pagamento_controller import PagamentoController
+from app.controllers.pagamento_webhook_controller import PagamentoWebhookController
 
 router = APIRouter(prefix="/webhook", tags=["webhook"])
 
@@ -37,7 +37,7 @@ def get_pagamento_gateway(db: Session = Depends(get_db)) -> PagamentoGateway:
 def atualizar_pagamento(pagamento_data: PagamentoAtualizaWebhookSchema, db_session: PagamentoGateway = Depends(get_pagamento_gateway)):
     try:
         
-        return PagamentoController(db_session=db_session).atualizar_pagamento(codigo=pagamento_data.codigo_pagamento, pagamento_request=pagamento_data)
+        return PagamentoWebhookController(db_session=db_session).atualizar_pagamento(codigo=pagamento_data.codigo_pagamento, pagamento_request=pagamento_data)
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
