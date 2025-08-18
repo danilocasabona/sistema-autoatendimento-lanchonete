@@ -32,22 +32,24 @@ class PagamentoUseCase:
     
     def buscar_pagamento_por_codigo(self, codigo_pagamento: str) -> PagamentoResponseSchema:
         pagamento_consulta: Pagamento = self.pagamento_entities.buscar_pagamento_por_codigo(codigo_pagamento=codigo_pagamento)
-        pagamento_response: PagamentoResponseSchema = PagamentoResponseSchema(pedido_id=pagamento_consulta.pedido, codigo_pagamento=pagamento_consulta.codigo_pagamento, status=pagamento_consulta.status)
-
-        return pagamento_response
-    
-    def atualizar_pagamento(self, codigo: str, pagamento_request: PagamentoAtualizaSchema) -> PagamentoResponseSchema: 
-        pagamento_entity: Pagamento = self.buscar_pagamento_por_codigo(codigo_pagamento=codigo)
         
-        if not pagamento_entity:
+        if not pagamento_consulta:
             raise ValueError("Pagamento não encontrado")
-              
-        pagamento_entity.status = pagamento_request.status
 
-        clienteAtualizado: Pagamento = self.pagamento_entities.atualizar_pagamento(codigo=codigo, pagamento=pagamento_entity)
-        pagamento_response: PagamentoResponseSchema = PagamentoResponseSchema(pedido_id=clienteAtualizado.pedido_id, codigo_pagamento=clienteAtualizado.codigo_pagamento, status=clienteAtualizado.status)
+        return (PagamentoResponseSchema(
+                pedido_id=pagamento_consulta.pedido, 
+                codigo_pagamento=pagamento_consulta.codigo_pagamento, 
+                status=pagamento_consulta.status))
+    
+    def atualizar_pagamento(self, pagamentoDTO) -> PagamentoAtualizaSchema:
+        clienteAtualizado: Pagamento = self.pagamento_entities.atualizar_pagamento(pagamentoDTO)
+        
+        if not clienteAtualizado:
+            raise ValueError("Pagamento não encontrado")
 
-        return pagamento_response
+        return (PagamentoAtualizaSchema(
+                status = clienteAtualizado.status
+            ))
     
     def deletar_pagamento(self, codigo_pagamento: str): 
         self.pagamento_entities.deletar_pagamento(codigo_pagamento=codigo_pagamento)
