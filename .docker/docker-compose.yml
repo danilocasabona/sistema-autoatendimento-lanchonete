@@ -3,7 +3,7 @@ services:
     build:
       context: ./bin/webserver
       dockerfile: Dockerfile
-    container_name: lanchonete_app
+    container_name: lanchonete_local_app
     ports:
       - "${APP_PORT}:8000"
     volumes:
@@ -18,7 +18,7 @@ services:
     build:
       context: ./bin/postgresql
       dockerfile: Dockerfile
-    container_name: lanchonete_db
+    container_name: lanchonete_local_db
     env_file:
       - .env
     environment:

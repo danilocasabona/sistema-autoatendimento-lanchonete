@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: db
+  name: lanchonete-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: db
+      app: lanchonete-db
   template:
     metadata:
       labels:
-        app: db
+        app: lanchonete-db
     spec:
       containers:
-        - name: db
+        - name: lanchonete-db
           image: dcasabona/custom-postgres:latest
           ports:
             - containerPort: 5432
