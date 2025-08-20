@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, constr, ConfigDict
-from app.adapters.schemas.cliente import *
+from app.adapters.presenters.cliente_presenter import *
 from app.adapters.schemas.produto import *
 from app.adapters.enums import status_pedido
 from typing import Optional

@@ -10,7 +10,3 @@ class PagamentoResponseSchema(BaseModel):
 
 class PagamentoAtualizaSchema(BaseModel):
     status: str
-
-class PagamentoAtualizaWebhookSchema(BaseModel):
-    codigo_pagamento: str
-    status: str

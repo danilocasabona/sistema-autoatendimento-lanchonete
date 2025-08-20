@@ -35,10 +35,10 @@ def get_pagamento_gateway(db: Session = Depends(get_db)) -> PagamentoGateway:
         }
     }
 })
-def atualizar_pagamento(pagamento_data: PagamentoAtualizaWebhookSchema, db_session: PagamentoGateway = Depends(get_pagamento_gateway)):
+def atualizar_pagamento(pagamento_data: PagamentoAtualizaWebhookSchema, gateway: PagamentoGateway = Depends(get_pagamento_gateway)):
     try:
         
-        return (PagamentoWebhookController(db_session=db_session)
+        return (PagamentoWebhookController(db_session=gateway)
                 .atualizar_pagamento(pagamento_data))
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
