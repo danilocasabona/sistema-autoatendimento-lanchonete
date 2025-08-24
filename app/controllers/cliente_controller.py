@@ -1,7 +1,9 @@
-from fastapi import status, HTTPException
-from app.use_cases.cliente.cliente_use_case import ClienteUseCase
+from fastapi import status, HTTPException, Response
+
+from app.use_cases.cliente_use_case import ClienteUseCase
 from app.adapters.presenters.cliente_presenter import ClienteResponse, ClienteResponseList
-from app.adapters.dto.cliente_dto import ClienteCreateSchema
+from app.adapters.dto.cliente_dto import ClienteCreateSchema, ClienteUpdateSchema
+
 class ClienteController:
     
     def __init__(self, db_session):
@@ -43,7 +45,7 @@ class ClienteController:
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-    def atualizar_cliente(self, cliente_id: int, cliente_data):
+    def atualizar_cliente(self, cliente_id: int, cliente_data: ClienteUpdateSchema):
         try:
             result = ClienteUseCase(self.db_session).atualizar_cliente(cliente_id=cliente_id, clienteRequest=cliente_data)
 
@@ -57,6 +59,7 @@ class ClienteController:
         try:
             ClienteUseCase(self.db_session).deletar_cliente(cliente_id=cliente_id)
             
+            return Response(status_code=status.HTTP_204_NO_CONTENT)
         except ValueError as e:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
         except Exception as e:

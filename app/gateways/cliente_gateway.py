@@ -1,6 +1,5 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 
 from app.entities.cliente.models import Cliente
 from app.entities.cliente.entities import ClienteEntities
@@ -21,15 +20,16 @@ class ClienteGateway(ClienteEntities):
         return self.dao.buscar_por_cpf(cpf_cliente)
 
     def buscar_por_id(self, cliente_id: int) -> Optional[Cliente]:
+        
         return self.dao.buscar_por_id(cliente_id)
 
     def listar_todos(self) -> List[Cliente]:
         
         return self.dao.listar_todos()
 
-    def atualizar_cliente(self, cliente: Cliente) -> Cliente:
+    def atualizar_cliente(self, cliente_id:int, cliente: Cliente) -> Cliente:
 
-        return self.dao.atualizar_cliente(cliente)
+        return self.dao.atualizar_cliente(cliente_id, cliente)
 
     def deletar_cliente(self, cliente_id: int) -> None:
         

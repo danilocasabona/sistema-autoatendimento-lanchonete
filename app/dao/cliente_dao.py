@@ -6,10 +6,9 @@ from app.models.cliente import Cliente as ClienteModel
 class ClienteDAO:
     
     def __init__(self, db_session):
-        
         self.db_session = db_session
 
-    def criar_cliente(self, cliente):
+    def criar_cliente(self, cliente : Cliente):
         try:
             cliente_model = ClienteModel(
                 nome=cliente.nome,
@@ -45,11 +44,11 @@ class ClienteDAO:
     def listar_todos(self) -> Cliente | None : 
         
         return (self.db_session
-                .query(ClienteModel)
+                .query(Cliente)
                 .all())
 
-    def atualizar_cliente(self, cliente) -> Cliente | None:
-        cliente_busca = self.buscar_por_id(cliente.cliente_id)
+    def atualizar_cliente(self, cliente_id: int, cliente) -> Cliente | None:
+        cliente_busca = self.buscar_por_id(cliente_id)
 
         if cliente : 
             for field, value in cliente.model_dump().items():

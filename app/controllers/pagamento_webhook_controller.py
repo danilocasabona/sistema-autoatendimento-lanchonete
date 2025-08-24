@@ -1,7 +1,9 @@
 from fastapi import status, HTTPException
+
 from app.adapters.dto.pagamento_dto import PagamentoAtualizaWebhookSchema
-from app.use_cases.pagamento.pagamento_use_case import PagamentoUseCase
+from app.use_cases.pagamento_use_case import PagamentoUseCase
 from app.adapters.presenters.pagamento_presenter import WebhookResponse
+
 class PagamentoWebhookController:
     
     def __init__(self, db_session):

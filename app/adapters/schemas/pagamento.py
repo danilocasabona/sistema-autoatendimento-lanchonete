@@ -1,8 +1,5 @@
 from pydantic import BaseModel
 
-class PagamentoCreateSchema(BaseModel):
-    pedido_id: int
-    
 class PagamentoResponseSchema(BaseModel):
     pedido_id: int
     codigo_pagamento:str

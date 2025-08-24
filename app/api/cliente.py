@@ -1,19 +1,18 @@
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from app.gateways.cliente_gateway import ClienteGateway
 from app.infrastructure.db.database import get_db
+from app.gateways.cliente_gateway import ClienteGateway
 from app.adapters.presenters.cliente_presenter import ClienteResponse
 from app.adapters.dto.cliente_dto import ClienteCreateSchema, ClienteUpdateSchema
 from app.controllers.cliente_controller import ClienteController
 
 router = APIRouter(prefix="/clientes", tags=["clientes"])
 
-# Dependência para injetar o service
-def get_cliente_gateway(db: Session = Depends(get_db)) -> ClienteGateway:
+def get_cliente_gateway(database: Session = Depends(get_db)) -> ClienteGateway:
     
-    return ClienteGateway(db_session=db)
+    return ClienteGateway(db_session=database)
 
 @router.post("/", response_model=ClienteResponse, status_code=status.HTTP_201_CREATED, responses={
     400: {
@@ -196,9 +195,8 @@ def atualizar_cliente(cliente_id: int, cliente_data: ClienteUpdateSchema, gatewa
 })
 def deletar_cliente(cliente_id: int, gateway: ClienteGateway = Depends(get_cliente_gateway)):
     try:
-        ClienteController(db_session=gateway).deletar_cliente(cliente_id=cliente_id)
-
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
+        
+        return ClienteController(db_session=gateway).deletar_cliente(cliente_id=cliente_id)       
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
